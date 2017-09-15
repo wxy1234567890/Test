@@ -11,7 +11,7 @@ var webpackConfig,
 /* entry */
   var entry = {
     bll:[__dirname + '/src/main.jsx'],
-    vendor:['react','react-dom',"backbone","echarts"]//第三方模块
+    vendor:['react','react-dom',"backbone","echarts","zepto"]//第三方模块
   };
 /* entry */
 
