@@ -41,6 +41,15 @@ module.exports = {
 		name:'其他',
 		value:4
 	}],
+	InformState:[{
+		key: "used",
+		name: "已使用",
+		value: 1
+	},{
+		key: "stopped",
+		name: "待使用",
+		value: 2
+	},],
 	getDefineByValue: function(list, value) {
 		for (var i = 0; i < list.length; i++) {
 			if (list[i].value == value) {
