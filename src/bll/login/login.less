@@ -1,0 +1,170 @@
+.v-login{
+  padding-top: 35px;
+  margin: 0 auto;
+
+  .top{
+    margin: 0 auto;
+    width: 930px;
+    height: 38px;
+    display: block;
+    background: url(./images/logo.png) 0 0 no-repeat;
+  }
+  .middlewrap{
+    margin: 0 auto;
+    width: 930px;
+  }
+
+  .middle{
+    position: absolute;
+    top: 70px;
+    bottom: 61px;
+    padding-top:35px;
+    overflow-y: auto;
+    width: 100%;
+
+    .left{
+      float:left;
+      width: 555px;
+      height:405px;
+      background:url(./images/login-pic.jpg) 0 0 no-repeat;
+    }
+
+    .right{
+      float:left;
+      width:349px;
+      height:369px;
+      padding:35px 25px 30px;
+      border:1px solid #ccd2d6;
+
+      h2{
+        margin:0 0 30px;
+        font-size: 20px;
+        color: #232323;
+        font-weight: normal;
+        span{
+          cursor: pointer;
+        }
+        .active{
+          color: #0085d0;
+        }
+        em{
+          padding:0 10px;
+          color: #ccd2d6;
+        }
+      }
+
+      .login-input{
+        position: relative;
+        width:296px;
+        border:1px solid #ccd2d6;
+        border-radius:5px;
+
+        input{
+          width:294px;
+          height:48px;
+          line-height: 48px;
+          font-size: 16px;
+          text-indent:5px;
+          border:0;
+          background: none;
+
+          &.input{
+            border-top:1px solid #ccd2d6;
+          }
+        }
+        input::-ms-clear,input::-ms-reveal{display: none;}
+
+        em{
+          position: absolute;
+          right:10px;
+          top:17px;
+          width:11px;
+          height:11px;
+          cursor:pointer;
+          background: url(./images/del.png) 0 0 no-repeat;
+          &:nth-of-type(2){
+            top:65px;
+          }
+          &:hover{
+            background: url(./images/del_hover.png) 0 0 no-repeat;
+          }
+        }
+      }
+
+      .tips{
+        padding: 10px 0;
+        font-size: 14px;
+
+        .error{
+          padding:10px 0;
+
+          em{
+            display: inline-block;
+            width: 10px;
+            height:10px;
+            margin-right:5px;
+            background:url(./images/tips_error.png) 0 0 no-repeat;
+          }
+
+          &.red{
+            color:#fe0000;
+          }
+        }
+
+      }
+
+      .btn{
+        display: inline-block;
+        width:100%;
+        padding:6px 0;
+        font-size:20px;
+        color:#fff;
+        background: #3e94fe;
+        border:0;
+        border-radius:2px;
+        cursor:pointer;
+        text-align: center;
+        line-height: normal;
+      }
+
+      .container{
+        padding:10px 0;
+
+        input{
+          margin-right:3px;
+          vertical-align: middle;
+        }
+
+        span{
+          color: #999;
+        }
+      }
+    }
+  }
+
+  .bottom{
+    position: fixed;
+    left:0;
+    bottom: 0;
+    width:100%;
+    padding:20px 0;
+    color:#5e5e5e;
+    text-align:center;
+    background: #f6f6f6;
+
+    span{
+      display: inline-block;
+      color:#5e5e5e;
+      font-size:14px;
+    }
+    i{
+      padding:0 5px;
+      font-size:12px;
+      color:#e6e6e6;
+    }
+
+  }
+}
+
+
+

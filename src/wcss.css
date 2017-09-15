@@ -1,0 +1,306 @@
+.winfor{
+	width: 100%;
+}
+
+.winfor li{
+	margin-left: 30px;
+    display: inline-block;
+    width: 46%;
+}
+
+.wmt{
+	margin-top: 25px;
+}
+
+.wsearch{
+	display: inline-block;
+    float: right;
+}
+
+.wtitle{
+	font-size: 16px;
+    width: 200px;
+}
+
+.wuserdtl{
+	top: 0;
+    left: 260px;
+    right: 0;
+    bottom: 0;
+    padding-top:15px;
+    overflow-y: auto;
+}
+
+.right{
+	overflow: auto !important;
+}
+
+.wlefttable{
+	width: 55%;
+	display: inline-block;
+}
+.wrighttable{
+	width: 95%;
+	margin-top: 20px
+}
+
+.wright {
+    /* width: 44%; */
+    display: inline-block;
+    margin-left: 270px;
+    /* float: right; */
+}
+
+.wtitle1{
+	font-size: 18px;
+	font-weight: bold;
+    vertical-align: middle;
+    line-height: 50px;
+}
+
+.addif{
+	width: 800px !important;
+}
+.addif600{
+	width: 600px !important;
+}
+
+.selectbox {
+    width: 318px;
+}
+
+.awayleft{
+	margin-left: 20px;
+}
+
+.wcheck{
+	margin-left: 20px; 
+	vertical-align: middle;
+}
+
+.wtext{
+	color: #3083EB;
+    line-height: 25px;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+.ctlogsea{
+	font-size: 14px;
+    font-weight: bold;
+}
+
+
+.diagright{
+	display: inline-block;
+	width: 40%;
+	border-left: 1px solid #d8dde1;
+	margin-left: 15%;
+
+}
+
+.diagleft{
+	display: inline-block;
+	width: 40%;
+	border-right: 1px solid #d8dde1;
+}
+
+.wsea{
+	float: none;
+}
+
+
+.wli{
+    padding: 10px 10px 10px 15px;
+    border-bottom: 1px solid #d8dde1;
+    cursor: pointer;
+}
+
+.wradiobtn{
+	margin-left: 10px;
+}
+
+.wclose{
+	display: none;
+}
+
+.wprolist{
+	width: 100% !important;
+}
+
+.radiobtn li.active2 {
+    background: #56ba5a;
+    color: #fff;
+}
+
+.radiobtn li.active3 {
+    background: #56ba5a;
+    color: #fff;
+}
+
+.wradiobtn1{
+	margin-top: -10px;
+}
+
+.inlineblc{
+	display: inline-block;
+}
+
+.wproli{
+	margin-top: 10px;
+    margin-left: 38px;
+}
+
+.wproli2{
+	margin-top: 10px;
+    margin-left: 21px;
+    display: inline-block !important;
+}
+
+.waddd{
+	margin-top: 10px;
+    margin-left: 58px;
+}
+
+.h418{
+	height: 418px;
+}
+
+.wtxt{
+	width: 95%;
+	margin-top: 20px;
+}
+
+.wwidth80{
+	width: 70% !important;
+}
+
+.w85{
+	width: 85px !important;
+} 
+
+.txtright{
+	display: none !important;
+}
+
+.wspan{
+	display: inline-block !important; 
+}
+
+.imfordtl2{
+	display: inline-block;
+    width: 170px;
+    padding-left:60px !important;
+    margin-top: 10px !important;
+}
+
+#wrightw{
+	width: 100%;
+}
+
+.wradiobtnw{
+	margin-left: 100px;
+}
+
+.wuserinfo{
+	height: 200px;
+}
+
+.wtopli{
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+.wff{
+	margin-bottom: 5px;
+}
+
+#wechart{
+	width: 600px;
+	height:400px;
+	display: inline-block;
+}
+
+.wrighttable2{
+	display: inline-block;
+    width: 40%;
+    float: right;
+}
+
+.inputh{
+	height: 100px !important;
+}
+
+.wdisplaynone{
+	visibility:hidden;
+}
+
+.wfontpos{
+	margin-top: 7px;
+    margin-left: 20;
+}
+
+.w205{
+	width: 205px !important;
+}
+
+.wprice{
+	vertical-align: middle;
+    display: inline-flex;
+    margin-top: 10px;
+}
+
+.wpricen{
+	display: none !important;
+}
+
+.wvisible{
+	overflow: visible;
+}
+
+
+.wcodepic{
+	float: right;
+	display: block;
+    width: 48%;
+    height: 48px;
+    background-color: #3E94FE;
+    color: #FFF;
+    position: relative;
+    left: %;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 3;
+}
+
+.v-login .middle .right{
+	height: 450px !important;
+}
+
+.errorTips{
+	width:70%;
+	color:red;
+	font-size: 14px;
+	margin:0 auto;
+	height: 20px;
+	line-height:20px;
+    margin-top: 20;
+}
+
+#codeInput{
+    width: 150px;
+    border-right: 1px solid #ccd2d6;
+}
+
+.weditdia{
+	padding-left: 20px !important;
+    width: 520px !important;
+}
+
+.wml9{
+	margin-left: 9%;
+}
+
+.v-login .top {
+background: url(./images/logo.png) 0 0 no-repeat !important;
+}
