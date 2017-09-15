@@ -16,7 +16,8 @@ var userFreeze = require('collection/userFreeze');
 var editPwdDialog = require("./editPwd.jsx");
 var editUserDialog = require("./editUser.jsx");
 var withDraw = require("./withDraw.jsx");
-
+var token = require("./token");
+var seatingDialog = require("./seating.jsx");
 //用户列表
 var ChargeInfo = React.createClass({
 	componentDidUpdate: function() {
@@ -414,6 +415,19 @@ var UserManage = React.createClass({
 			}
 		});
 	},
+	seatingInfo:function(userId){
+		modalHelp.show({
+			Dialog:seatingDialog,
+			option:{
+				userId:userId,
+				ok:{
+					callback:function(){
+
+					}.bind(this)
+				}
+			}
+		});
+	},
 	resetPwd:function (userId) {
 		modalHelp.show({
 			Dialog: editPwdDialog,
@@ -481,6 +495,7 @@ var UserManage = React.createClass({
 							<span className="btn white mr-10" onClick={this.freezeAccount.bind(this,this.state.userInfo.attributes.id)}>冻结账户</span>
 							<span className="btn white mr-10" onClick={this.toEditUserInfo}>编辑资料</span>
 							<span className="btn white mr-10" onClick={this.resetPwd.bind(this,this.state.userInfo.attributes.id)}>重置密码</span>
+							<span className="btn white mr-10" onClick={this.seatingInfo.bind(this,this.state.userInfo.attributes.id)}>坐席信息</span>
 						</div>
 					</div>
 				<div className="txtlistwrap clearfix">
