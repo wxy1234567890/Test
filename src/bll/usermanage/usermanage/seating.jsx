@@ -1,4 +1,3 @@
-
 var React = require("react");
 var TerseUI = require('terseui');
 var modalHelp = TerseUI.Frame.modalHelp;
@@ -48,21 +47,21 @@ var Item = React.createClass({
     }
 });
 var Seating = React.createClass({
-	getInitialState: function() {
-		return {
-			seatingModel: new SeatingModel(),
-			userid:this.props.option.userId,
-			// userid:this.props.option.userId,
-			// username:this.props.option.username,
-			pagenow: 1,
+    getInitialState: function () {
+        return {
+            seatingModel: new SeatingModel(),
+            userid: this.props.option.userId,
+            // userid:this.props.option.userId,
+            // username:this.props.option.username,
+            pagenow: 1,
             pagesize: 10,
             filter: "",
             flag: false,
-            agentList:[],
-            status:""
-		};
-	},
-	componentDidMount: function () {
+            agentList: [],
+            status: ""
+        };
+    },
+    componentDidMount: function () {
         this.tokenEvents = {
             "page": this.queryAgentList,
             "selectClick": this.queryListSelect
@@ -74,38 +73,38 @@ var Seating = React.createClass({
         this.state.seatingModel.on(this.listEvents);
         this.queryAgentList();
     },
-    componentWillUnmount: function() {
+    componentWillUnmount: function () {
         this.unmount = true;
         token.off(this.tokenEvents);
         token.clear();
-        this.state.seatingModel.off("fetchDone");        
+        this.state.seatingModel.off("fetchDone");
     },
-    queryAgentList:function(){
-    	this.state.flag = false;
+    queryAgentList: function () {
+        this.state.flag = false;
         this.state.seatingModel.fetch({
             loadingFlag: true,
             param: {
-                id:this.state.userid,
+                id: this.state.userid,
                 // id:10,
-                pagesize:this.state.pagesize,
-                pagenow:this.state.pagenow,
+                pagesize: this.state.pagesize,
+                pagenow: this.state.pagenow,
                 status: this.state.status,
             }
         });
     },
-    afterQueryAgentList:function(data){
-    	// this.props.option.ok.callback();
+    afterQueryAgentList: function (data) {
+        // this.props.option.ok.callback();
         // console.log(data);
-    	this.state.agentList = data.list;
-    	this.setState({
-    		agentList:data.list
-    	});
-    	console.log(this.state.agentList);
+        this.state.agentList = data.list;
+        this.setState({
+            agentList: data.list
+        });
+        console.log(this.state.agentList);
     },
-	closeHandler: function() {
-		this.props.close();
-	},
-	eventListener: function (type, param) {
+    closeHandler: function () {
+        this.props.close();
+    },
+    eventListener: function (type, param) {
         if (type == "page") {
             this.state.pagesize = param;
             this.setState({
@@ -114,11 +113,12 @@ var Seating = React.createClass({
             token.trigger('page');
         }
         if (type == "selectClick") {
-			token.trigger('selectClick', param);
-		}
+            token.trigger('selectClick', param);
+        }
     },
-    queryListSelect:function(param){
+    queryListSelect: function (param) {
         console.log(param);
+<<<<<<< HEAD
     	    if (!param.key) {
 				this.state.status ="";
 			}
@@ -135,19 +135,33 @@ var Seating = React.createClass({
 				status: this.state.status,
 			},function(){
                 console.log(this.state.status);
-            });
-			this.queryAgentList();
-			this.refresh();
+=======
+        if (!param.key) {
+            this.state.status = "";
+        }
+        if (param.key == "used") {
+            this.state.status = param.value + "";
+        }
+        if (param.key == "stopped") {
+            this.state.status = param.value + "";
+        }
+        this.setState({
+            status: this.state.status,
+        }, function () {
+            console.log(this.state.status);
+        });
+        this.queryAgentList();
     },
-    refresh: function() {
-		if (!this.unmount) {
-			this.setState({
-				a: 1
-			});
-		}
-	},
-	render: function() {
-		var headOpt = [{
+    refresh: function () {
+        if (!this.unmount) {
+            this.setState({
+                a: 1
+>>>>>>> d3f35f3ac1917930675f6180c8dfcdfe159ee692
+            });
+        }
+    },
+    render: function () {
+        var headOpt = [{
             key: 'seatingDecode',
             name: '坐席编码',
             width: '25%'
@@ -164,7 +178,7 @@ var Seating = React.createClass({
                 key: "used",
                 name: "生效",
                 value: 1
-            },{
+            }, {
                 key: "stopped",
                 name: "失效",
                 value: 0
@@ -180,13 +194,13 @@ var Seating = React.createClass({
             pageSize: this.state.pagesize,
             total: this.state.total
         };
-		return (
-			<div className="dialog-confirm editdialog" style={{width: 488}}>
-				<div className="dialog-hd clearfix">
+        return (
+            <div className="dialog-confirm editdialog" style={{width: 488}}>
+                <div className="dialog-hd clearfix">
                     <h2>坐席信息</h2>
                     <span className="close" onClick={this.closeHandler}>×</span>
                 </div>
-				<div className="dialog-bd ">
+                <div className="dialog-bd ">
                     <div className="pos-rel dialogdatagrid trdialog">
                         <DataGrid
                             headOpt={headOpt}
@@ -196,9 +210,9 @@ var Seating = React.createClass({
                             eventListener={this.eventListener}/>
                     </div>
                 </div>
-			</div>
-		);
-	}
+            </div>
+        );
+    }
 });
 
 module.exports = Seating;
