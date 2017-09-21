@@ -3,11 +3,13 @@
 }
 
 .winfor li{
-	margin-left: 30px;
+	margin-right: 35px;
     display: inline-block;
     width: 46%;
 }
-
+.winfor li:nth-child(2n) {
+	margin-right: 0;
+}
 .wmt{
 	margin-top: 25px;
 }
@@ -237,7 +239,7 @@
 
 .wfontpos{
 	margin-top: 7px;
-    margin-left: 20;
+    margin-left: 20px;
 }
 
 .w205{
@@ -267,7 +269,6 @@
     background-color: #3E94FE;
     color: #FFF;
     position: relative;
-    left: %;
     border-radius: 5px;
     text-align: center;
     line-height: 3;
@@ -284,7 +285,7 @@
 	margin:0 auto;
 	height: 20px;
 	line-height:20px;
-    margin-top: 20;
+    margin-top: 20px;
 }
 
 #codeInput{

@@ -8,11 +8,7 @@ var List = Backbone.Collection.extend({
     fetch:function(option){
         option.loadingText = "正在加载数据,请稍候!";
         option.url = "/product/getProductList.action";
-        option.data = {
-            type:"0",
-            pagesize:"10",
-            pagenow:"1"
-        };
+        option.data = {};
         option.success = function(data) {
             this.set(data.list);
             this.trigger("fetchDone");

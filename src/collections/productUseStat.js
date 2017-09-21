@@ -9,7 +9,6 @@ var Model = Backbone.Model.extend({
             id:option.param.businessId
         };
         option.success = function(data) {
-            console.log(data);
             this.set(data);
             this.trigger("getProductUseStat");
         }.bind(this);
