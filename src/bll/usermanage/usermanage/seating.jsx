@@ -5,7 +5,7 @@ var modalHelp = TerseUI.Frame.modalHelp;
 var Dialog = TerseUI.Frame.Dialog;
 var DataGrid = TerseUI.Frame.DataGrid;
 var token = require("./token");
-var Constance = require("root/constance");
+// var Constance = require("root/constance");
 var SeatingModel = require('collection/seatingModel');
 
 var Item = React.createClass({
@@ -119,7 +119,7 @@ var Seating = React.createClass({
     },
     queryListSelect:function(param){
         console.log(param);
-    	if (!param.key) {
+    	    if (!param.key) {
 				this.state.status ="";
 			}
 			if (param.key == "used") {
@@ -128,6 +128,9 @@ var Seating = React.createClass({
 			if (param.key == "stopped") {
 				this.state.status = param.value+"";
 			}
+            // if(!param.value){this.state.status ="";}
+            // if(param.value == 1){this.state.status = param.value+"";}
+            // if(param.value == 0){this.state.status = param.value+"";}
 			this.setState({
 				status: this.state.status,
 			},function(){
