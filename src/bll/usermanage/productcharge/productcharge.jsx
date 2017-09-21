@@ -181,8 +181,10 @@ var UserManage = React.createClass({
 		window.month=getY_M(0);
 		}
 		var dateArray = [getY_M(0),getY_M(-1),getY_M(-2),getY_M(-3),getY_M(-4)];
-		console.log(this.state.projectList,456);
-		// var getName=this.state.projectList[0].get("name");
+		console.log(this.state.projectList.models[0],456);
+		console.log(this.state.projectList,789);
+		var getName=this.state.projectList.toArray()[0];
+		console.log(getName);
 		return (
 			<div style={{"height":"545px"}}>
 				<Scroll className="userlist">
