@@ -45,18 +45,30 @@ var UserB = React.createClass({
 		var typeName = ["预付费","先付费"];
 		var userBusiness = this.props.option;
 		return (
-			<ul className='rightul pos-absolute'>
+			<ul className='rightul pos-absolute'>											
 				{userBusiness.map(function(item,index){
+					if(item.get('productType') == 1){
 					return (
-						<li key={index} className='lione rightli fl' onClick={this.toDetail.bind(this,item.get("id"))}>
-							<img className="fl" src={require(  "../../../images/pic1.png")} />
+						<li key={index} style={{"width":"400px","padding":"15px 0","margin":"0 10px"}} className='rightli fl' onClick={this.toDetail.bind(this,item.get("id"))}>
+							<span className='pic1 fl'><em></em></span>
 							<p className='fl'>
 								<span className='name f16'>{item.get('name')}</span>
 								<span className='billing f12'>购买总计/消费总计/当月消费（条）</span>
 								<span className='num f24'>{item.get('subsTotal')}/{item.get('useTotal')}/{item.get('useCount')}</span>
 							</p>
 						</li>
+					)}else if(item.get('productType') == 0){
+						return (
+						<li key={index} style={{"width":"400px","padding":"15px 0","margin":"0 10px"}} className='rightli fl' onClick={this.toDetail.bind(this,item.get("id"))}>
+							<span className='call1 fl'><em></em></span>
+							<p className='fl'>
+								<span className='name f16'>{item.get('name')}</span>
+								<span className='billing f12'>开通坐席数/消费总金额/呼叫总时长</span>
+								<span className='num f24'>{item.get('subsTotal')}/{item.get('useTotal')}/{item.get('useCount')}</span>
+							</p>
+						</li>
 					)
+					}
 				}.bind(this))}
 			</ul>
 		)
@@ -134,9 +146,9 @@ var UserCharge = React.createClass({
 				</div>
 				<div className="userdtl">
 					<div className="basicinfo">
-						<span className="title ellipsis">产品计费</span>
+						<span className="title ellipsis">业务计费</span>
 						<div className="selectboxr selectbox pos-rel fr">
-						<div className="tit fl wtitmonth cursor">
+						<div className="tit fl cursor">
 						<div>
 							<Select ref="monthRef" labelWidth="100px" onChange={this.search}>
 								{
@@ -152,7 +164,7 @@ var UserCharge = React.createClass({
 								<li>获客专家</li>
 							</ul>
 						</div>
-					</div>
+					</div>					
 					<UserB option={this.state.userBusiness}/>
 				</div>
       		</div>

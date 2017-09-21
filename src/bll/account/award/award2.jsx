@@ -3,9 +3,11 @@ var userList = require('collection/userList');
 var userBusiness = require('collection/userBusiness');
 var subject = require("model/global/subject");
 var TerseUI = require("terseui");
+var laydate = require("laydate");
 var PageTool = TerseUI.Frame.PageTool;
 var modalHelp = TerseUI.Frame.modalHelp;
 var Dialog = TerseUI.Frame.Dialog;
+var DataGrid = TerseUI.Frame.DataGrid;
 var Dialogdtl = require("./dtl.jsx");
 var huokeList = require('collection/HuokeDayList');
 var huokeList2 = require('collection/HuokeMonthList2');
@@ -13,7 +15,7 @@ var awardDetail = require('collection/AwardDetail');
 var Select = TerseUI.Select;
 var FormGroup = TerseUI.FormGroup;
 var echarts = require("echarts");
-
+var token = require("./token");
 
 var UserB = React.createClass({
 	render:function(){
@@ -23,23 +25,13 @@ var UserB = React.createClass({
 				<ul>
 				{userBusiness.map(function(item,index){
 					if(window.proid == item.get('id')){
-					return (
-						<li key={index} className='lione rightli fl wtopli'>
-							<img className="fl" src={require(  "../../../images/pic1.png")} />
-							<p className='fl'>
-								<span className='name f16'>{item.get('name')}<span className='prepaid'>（{typeName[item.get('type')]}）</span></span>
-								<span className='billing f12'>购买总计/消费总计/当月消费（条）</span>
-								<span className='num f24'>{item.get('subsTotal')}/{item.get('useTotal')}/{item.get('useCount')}</span>
-								<span className='billing f12'>当前状态：开通</span>
-								<span className='billing f12'>付费类型：预付费</span>
-								<span className='billing f12'>开通日期：2016.12.30</span>
-								<span className='billing f12'>所属企业：亚信科技</span>
+					return (							
+							<p className='fl' key={index}>
+								<span className="f18" style={{"display":"inline-block","height":"24px","margin":"20px","fontWeight":600}}>{item.get('name')?item.get('name'):'暂无数据'}<span className='prepaid'>（{typeName[item.get('productType')]}）</span></span>
 							</p>
-						</li>
 					)}
 				}.bind(this))}
 				</ul>
-
 		)
 	}
 })
@@ -94,6 +86,50 @@ var Datagrid2 = React.createClass({
 	}
 });
 
+var Item = React.createClass({
+    getInitialState: function () {
+        return {
+            status: 0,
+        }
+    },
+    render: function () {
+        var model = this.props.option.item;
+        return (
+            <tr>
+                <td width="20%">
+		        	<span className="ellipsis" title={model.get("seatingDecode")}>
+			        	<b className="f14 deepgray">
+				         	{model.get("seatingDecode")}
+				        </b>
+			        </span>
+                </td>
+                <td width="20%">
+		        	<span className="ellipsis" title={model.get("callTime")}>
+			         	{model.get("callTime")}
+			        </span>
+                </td>
+                <td width="20%">
+                    <div className="select-div ellipsis" title={model.get("logicalGroup")}>
+						<span>
+							{model.get("logicalGroup")}
+						</span>
+                    </div>
+                </td>
+                <td width="20%">
+		        	<span className="ellipsis" title={model.get("seatingCharge")}>
+			         	{model.get("seatingCharge")}
+			        </span>
+                </td>
+                <td width="20%">
+		        	<span className="ellipsis" title={model.get("updateTime")}>
+			         	{model.get("updateTime")}
+			        </span>
+                </td>
+            </tr>
+        );
+    }
+});
+
 var UserCharge = React.createClass({
 	datePx:1,//0-不排序 1-升序 2-降序
 	interfaceCountPx:0,
@@ -104,14 +140,28 @@ var UserCharge = React.createClass({
 	myChart:{},
 	monthValue:'',
 	getInitialState: function() {
+		var exectime = new  Date(), month=parseInt(exectime.getMonth())+1;
 		return {
+			exectime:exectime.getFullYear()+"-"+month+"-"+exectime.getDate(),
+			exectime: exectime,
 			tabType:2,//1-图表显示 2-表格显示
 			huokeList2: new huokeList2(),
 			huokeList:new huokeList(),
 			userBusiness:new userBusiness(),
 			huokelistarr:[],
 			interfaceNumOrder:true,
-			useCountOrder:true
+			useCountOrder:true,
+			// seatingModel: new SeatingModel(),
+			// userid:this.props.option.userId,
+			// userid:this.props.option.userId,
+			// username:this.props.option.username,
+			pageIndex: 1,
+            pageSize: 10,
+            filter: "",
+            flag: false,
+            agentList:[],
+            status:'0',
+            total:10
 		}
 	},
 	initChart2: function() {
@@ -134,135 +184,27 @@ var UserCharge = React.createClass({
 			data3.push(item.get('useCount'));
 			data4.push(item.get('useInterfaceNum'));				          
 		}.bind(this));
-
 	},
+	pageClick: function () {
+        var NUM = this.state.pageNum;
+        var starP = (NUM - 1) * 10;
+        var stopP = NUM * 10;
+        this.state.pageColl = this.state.pageCollT.slice(starP,stopP);
+        this.setState({
+            pageColl: this.state.pageColl
+        }, function () {
+            console.log(this.state.pageColl);
+        })
+    },
 	componentDidMount: function() {
+		this.tokenEvents = {
+            "page": this.huokeList2(),
+        };
+        token.on(this.tokenEvents);
 		this.myChart = echarts.init(this.refs.alarmchart);
-		this.state.huokeList2.on("fetchDone",function(){
-			this.setState({
-				huokeList2:this.state.huokeList2
-			});
-			this.initChart2();
 
-
-		var myChart2 = echarts.init(document.getElementById('wechart'));
-        // 指定图表的配置项和数据
-        console.log(window.data0);
-        console.log(window.data1);
-        function turnarr(arr){
-        	if(arr.length==0){
-        		window.data0=["数据暂无"];
-        		window.data1=[{value:1,name:"数据暂无"}];
-        	}
-        }
-        turnarr(window.data0);
-		myChart2.setOption({
-				    tooltip: {
-				        trigger: 'item',
-				        formatter: "{a} <br/>{b}: {c} ({d}%)"
-				    },
-				    color:['#0dc98a', '#5da2ca','#2f4554','#d48265'],  
-				    legend: {
-				        orient: 'vertical',
-				        x: 'left',
-				        data:window.data0
-				    },
-				    series: [
-				        {
-				            name:'访问来源',
-				            type:'pie',
-				            radius: ['50%', '70%'],
-				            avoidLabelOverlap: false,
-				            label: {
-				                normal: {
-				                    show: false,
-				                    position: 'center'
-				                },
-				                emphasis: {
-				                    show: true,
-				                    textStyle: {
-				                        fontSize: '30',
-				                        fontWeight: 'bold'
-				                    }
-				                }
-				            },
-				            labelLine: {
-				                normal: {
-				                    show: false
-				                }
-				            },
-				            data:window.data1
-				        }
-				    ]
-				}
-			)
-		}.bind(this));
-
-		this.state.huokeList.on("fetchDone",function(){
-			this.setState({
-				huokeList:this.state.huokeList
-			});
-			this.initChart();
-
-
-		var myChart1 = echarts.init(document.getElementById('wechart1'));
-        // 指定图表的配置项和数据
- 		myChart1.setOption({
-				    tooltip : {
-				        trigger: 'axis',
-				        axisPointer: {
-				            type: 'cross',
-				            label: {
-				                backgroundColor: '#6a7985'
-				            }
-				        }
-				    },
-				    legend: {
-					data:['使用次数','使用接口数']
-				    },
-				    toolbox: {
-				        feature: {
-				            saveAsImage: {}
-				        }
-				    },
-				    grid: {
-				        left: '3%',
-				        right: '4%',
-				        bottom: '3%',
-				        containLabel: true
-				    },
-				    xAxis : [
-				        {
-				            type : 'category',
-				            boundaryGap : false,
-				            data : window.data2
-				        }
-				    ],
-				    yAxis : [
-				        {
-				            type : 'value'
-				        }
-				    ],
-				    series : [
-				        {
-				            name:'使用次数',
-				            type:'line',
-				            stack: '总量',
-				            areaStyle: {normal: {}},
-				            data:window.data3
-				        },
-				        {
-				            name:'使用接口数',
-				            type:'line',
-				            stack: '总量',
-				            areaStyle: {normal: {}},
-				            data:window.data4
-				        }
-				    ]
-				}
-			)
-		}.bind(this));
-
+		this.huokeList2();
+		this.huokeList();
 
 		this.monthValue=this.refs.monthRef.getValue();
 		this.findList(this.monthValue);
@@ -278,11 +220,134 @@ var UserCharge = React.createClass({
 		else{
 			$(".wrighttable2").show();
 		}
+		if (this.state.huokeList.length==0) {
+			$(".wrighttable2").hide();
+		}
+		else{
+			$(".wrighttable2").show();
+		}
 	},
 	componentWillUnmount:function(){
+		this.unmount = true;
+        token.off(this.tokenEvents);
+        token.clear();
 		this.state.huokeList2.off("fetchDone");
 		this.state.huokeList.off("fetchDone");
 	},
+	huokeList:function(){
+		this.state.huokeList.on("fetchDone",function(){
+			this.setState({
+				huokeList:this.state.huokeList
+			});
+			this.initChart();
+			
+		var myChart1 = echarts.init(document.getElementById('wechart1'));
+        //指定图表的配置项和数据
+ 		myChart1.setOption({
+					title : {
+				       text: '总概述',
+				       textStyle: {
+		               fontWeight: 600,
+		            },
+				       x:'left'
+				   },
+				    tooltip: {
+				        trigger: 'item',
+        				formatter: "{a} <br/>{b} ({d}%)"
+				    },
+				    series: [
+				        {
+				            name:'访问来源',
+				            type:'pie',
+				            selectedMode: 'single',
+				            radius : '60%',
+				            center: ['40%', '50%'],
+				            label: {
+				                normal: {
+				                show:true,
+				                }
+				            },
+				            labelLine: {
+				                show:true,
+				            },
+				            data:[
+				                {value:335, name:'坐席数：335个',selected:true},
+				                {value:679, name:'总时长：679小时'},
+				                {value:1548, name:'总费用：1548元'}
+				            ],
+				            color: ['#0ec3b4','#1cbf28','#0085d0']
+				        },
+				    ]				
+				}
+			)
+		}.bind(this));
+	},
+	huokeList2:function(){		
+			this.state.huokeList2.on("fetchDone",function(){
+			this.setState({
+				huokeList2:this.state.huokeList2
+			});
+			this.initChart2();
+
+		var myChart2 = echarts.init(document.getElementById('wechart'));
+        // 指定图表的配置项和数据
+        console.log(window.data0);
+        console.log(window.data1);
+        function turnarr(arr){
+        	if(arr.length==0){
+        		window.data0=["数据暂无"];
+        		window.data1=[{value:1,name:"数据暂无"}];
+        	}
+        }
+        turnarr(window.data0);
+		myChart2.setOption({
+					title : {
+					       text: '总概述',
+					       textStyle: {
+			               fontWeight: 600,
+			            },
+					       x:'left'
+					   },
+				    tooltip: {
+				        trigger: 'item',
+        				formatter: "{a} <br/>{b} ({d}%)"
+				    },
+				    series: [
+				        {
+				            name:'访问来源',
+				            type:'pie',
+				            selectedMode: 'single',
+				            radius : '60%',
+				            center: ['40%', '50%'],
+				            label: {
+				                normal: {
+				                show:true,
+				                }
+				            },
+				            labelLine: {
+				                show:true,
+				            },
+				            data:[
+				                {value:335, name:'坐席数：335个',selected:true},
+				                {value:679, name:'总时长：679小时'},
+				                {value:1548, name:'总费用：1548元'}
+				            ],
+				            color: ['#0ec3b4','#1cbf28','#0085d0']
+				        },
+				    ]
+				}
+			)
+		}.bind(this));
+	},
+	eventListener:function (type, param) {
+        if (type == "page") {
+            this.state.pageSize = param;
+            this.setState({
+                pageSize: this.state.pageSize
+            });
+            token.trigger('page');
+        }
+    },
 	findList: function(month){
 		window.month = month;
 		var useCountOrder = "";
@@ -475,98 +540,137 @@ var UserCharge = React.createClass({
 		else{
 			$(".wrighttable2").show();
 		}
+		if (this.state.huokeList.length==0) {
+			$(".wrighttable2").hide();
+		}
+		else{
+			$(".wrighttable2").show();
+		}
 	},
+	monthInfo:function(){
+		this.state.status = '0';
+		this.setState({
+			status: '0'
+		});
+	},
+	dayInfo:function(){
+		this.state.status = '1';
+		this.setState({
+			status: '1'
+		});
+	},
+	onDatetimeClick: function (id) {
+        var self = this;
+        var obj = {
+            elem: "#" + id,
+            format: 'YYYY-MM-DD',
+            min: '1999-06-16', //最大日期
+            max: '2099-06-16', //最大日期
+            istime: true,
+            istoday: false,
+            choose: function (datas) {
+                self.createtimeChangeHandler(datas);
+            }
+        };
+        laydate(obj);
+    },
+    createtimeChangeHandler: function (event) {
+        this.state.exectime = event;
+        this.setState({
+            exectime: this.state.exectime,
+        }, function () {
+            console.log(this.state.exectime)
+        });
+    },
 	render:function(){
+		var headOpt = [{
+            key: 'seatingDecode',
+            name: '坐席编码',
+            width: '20%'
+        }, {
+            key: 'callTime',
+            name: '呼叫时长',
+            width: '20%',
+        },{
+            key: 'logicalGroup',
+            name: '逻辑分组',
+            width: '20%'
+        },  {
+            key: 'seatingCharge',
+            name: '坐席费用',
+            width: '20%',
+        },{
+            key: 'updateTime',
+            name: '更新时间',
+            width: '20%'
+        },];
 		var pageInfo = {
-			pageIndex: this.pageIndex,
-			pageSize: this.pageSize,
+			pageIndex: this.state.pageIndex,
+			pageSize: this.state.pageSize,
 			total: this.state.total
 		};
+		var style1={"height":"64px","width":"300px"}, style2={"width":"583px","height":"400px"},style3={"marginTop":"-406px"},style4={"fontWeight":800,"margin":"10px 20px"};
+		var style5={"display":"inline-block","width":"45px"},style6={"width":"240px"};
 		//获取当前月份及前五个月份的集合
 		var dateArray = [this.getY_M(0),this.getY_M(-1),this.getY_M(-2),this.getY_M(-3),this.getY_M(-4)];
 		this.pxStyle();
-    	return (
-
-    		
+    	return (    		
 			<div className="rightcon pro-dtl">
-				<div className="userinfo wuserinfo">
-				<UserB option={this.state.userBusiness}/>
+				<div className="userinfo" style={style1}>
+					<UserB option={this.state.userBusiness}/>
 				</div>
 				<div className="oper clearfix">
-					<div className="tit fl">
-						<div>
-							<Select ref="monthRef" label="月账单查看" labelWidth="100px" onChange={this.changeSelect}>
-								{
-									dateArray.map(function(item,index){
-										return <option key={index} value={item}>{item}</option>
-									}.bind(this))
-								}
-							</Select>
+					<div className="navigate">
+							<span className={this.state.status =='0' ?"fl active":"fl"} onClick={this.monthInfo}>按月查看</span>
+							<span className={this.state.status =='1' ?"fl active":"fl"} onClick={this.dayInfo}>按天查看</span>							
+					</div>					
+				</div>
+				<div className={this.state.status =='1' ?"hide":""}>
+					<div className="oper clearfix">
+							<div className="tit fl">
+								<Select className="ml-20" ref="monthRef" label="选择月" labelWidth="45px" onChange={this.changeSelect}>
+									{
+										dateArray.map(function(item,index){
+											return <option key={index} value={item}>{item}</option>
+										}.bind(this))
+									}
+								</Select>
+							</div>
+					</div>
+					<div id="wechart" className="ml-20"> </div>					
+					<div className="tablearea wrighttable2" style={style3}>
+							<p className="f16" style={style4}>坐席详情</p>
+							<div className="pos-rel dialogdatagrid trdialog">
+	                        <DataGrid
+	                            headOpt={headOpt}
+	                            list={this.state.huokeList2}
+	                            itemCls={Item}
+	                            pageInfo={pageInfo}
+	                            eventListener={this.eventListener}/>
+	                    	</div>
+					</div>
+				</div>
+				<div className={this.state.status =='0' ?"hide":""}>
+					<div className="oper clearfix">
+						<div className="tit fl mb-12">
+							<label className="ml-20 mr-10" style={style5}>选择天</label>
+							<input id="start" className="timeinput cursor" type="text" placeholder="请输入查询时间" style={style6}
+                               onChange={this.createtimeChangeHandler}
+                               onClick={this.onDatetimeClick.bind(this, "start")}
+                               ref="timeRef"/>									
 						</div>
 					</div>
-					<p className="fr mt-5"><span className="btn white line s">下载账单</span></p>
-				</div>
-				<div id="wechart"> </div>
-				<div className="tablearea wrighttable2">
-						<table>
-						<thead>
-							<tr>
-								<th width="25%">接口名称</th>
-								<th width="23%">百分比</th>
-								<th width="25%">条数</th>
-								<th width="25%">操作</th>
-							</tr>
-						</thead>
-							<tbody>
-							{
-								this.state.huokeList2.map(function(item,index){
-									return <Datagrid2 key={index} option={item} />
-								}.bind(this))
-							}
-							</tbody>
-					</table>
-				</div>
-				<div className="rightbody">
-					<div className="title clearfix">
-						<span className="name fl"><b className="f16">时间分析</b></span>
-						<ul className="radiobtn fr">
-							<li className={this.state.tabType==1 ? "active" : ""} onClick={this.changeTab.bind(this,1)}>图表显示</li>
-							<li className={this.state.tabType==2 ? "active" : ""} onClick={this.changeTab.bind(this,2)}>表格显示</li>
-						</ul>
-					</div>
-					<div id="wechart1" className={this.state.tabType==1 ? "char mt-20" : "char mt-20 hide"} ref="alarmchart" style={{height: 400, width: 1000}}></div>
-					<div className={this.state.tabType==2 ? "tablediv mt-20" : "tablediv mt-20 hide"}>
-						<div className="tablearea">
-							<table>
-								<tbody>
-								<tr>
-									<th width="30%" className="px-text" onClick={this.px.bind(this,'1')}>
-										<span className="ellipsis">日期<em className="px"></em></span>
-									</th>
-									<th width="30%" className="px-text" onClick={this.px.bind(this,'2')}>
-										<span className="ellipsis">使用接口数<em className="px"></em></span>
-									</th>
-									<th width="30%" className="px-text" onClick={this.px.bind(this,'3')}>
-										<span className="ellipsis">使用次数<em className="px"></em></span>
-									</th>
-									<th width="10%">
-										<span className="ellipsis">操作</span>
-									</th>
-								</tr>
-								</tbody>
-							</table>
-						</div>
-						<div className="tablearea plr20">
-							<table>
-								<tbody>
-								{
-									this.state.huokeList.map(function(item,index){
-										return <Datagrid key={index} option={item} />
-									}.bind(this))
-								}
-								</tbody>
-							</table>
-						</div>
+					<div id="wechart1" className="ml-20" ref="alarmchart" style={style2}></div>
+					<div className="tablearea wrighttable2" style={style3}>
+							<p className="f16" style={style4}>坐席详情</p>
+							<div className="pos-rel dialogdatagrid trdialog">
+	                        <DataGrid
+	                            headOpt={headOpt}
+	                            list={this.state.huokeList}
+	                            itemCls={Item}
+	                            pageInfo={pageInfo}
+	                            eventListener={this.eventListener}/>
+	                    	</div>
 					</div>
 				</div>
 			</div>

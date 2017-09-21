@@ -6,14 +6,9 @@ module.exports = function(obj) {
             errormsg:'',
             data: {
                 list:[
-                    {id:'1',userName:'James',bCount:4},
-                    {id:'2',userName:'kobe',bCount:5},
-                    {id:'3',userName:'gordon',bCount:6},
-                    {id:'4',userName:'ibaka',bCount:7},
-                    {id:'5',userName:'biyombo',bCount:8},
-                    {id:'6',userName:'kobe',bCount:1},
-                    {id:'7',userName:'gordon',bCount:2},
-                    {id:'8',userName:'biyombo',bCount:3}
+                    {id:'243',real_name:'33',login_name:"WW",subsProductCount:'0',company_id:'1'},
+                    {id:'263',real_name:'测试A',login_name:"AA",subsProductCount:'1',company_id:'2'},
+                    {id:'283',real_name:'测试B',login_name:"BB",subsProductCount:'0',company_id:'3'},
                 ]
             }
         });
@@ -85,8 +80,38 @@ module.exports = function(obj) {
             errormsg:'',
             data: {
                 list:[
-                    {id:'1',name:'获客专家',type:1,totalBuy:6855,totalAllUse:3855,totalMonthUse:3000},
-                    {id:'2',name:'智慧征信',type:0,totalBuy:6855,totalAllUse:3855,totalMonthUse:3000}
+                    {id:'1',name:'按次计费产品A',productType:1,subsTotal:20,useTotal:30,useCount:4},
+                    {id:'2',name:'智呼包月产品',productType:0,subsTotal:126,useTotal:52,useCount:43},
+                    {id:'3',name:'智呼标准产品',productType:0,subsTotal:26,useTotal:60,useCount:8},
+                    {id:'4',name:'智呼包时产品',productType:0,subsTotal:956,useTotal:6529,useCount:7863}
+                ]
+            }
+        });
+    };
+    obj["/product/getInterfaceUseListByMonthByDay.action"] = function(data, success, error) {
+        success({
+            errorcode:0,
+            errormsg:'',
+            data: {
+                list:[
+                    {id:'1',create_time:'2017年7月9日',name:'按次计费产品A',seatingDecode:43,callTime:'2017年7月9日',logicalGroup:'组一',seatingCharge:4343,updateTime:'2017年7月9日',useInterfaceNum:33,useCount:4,phoneCount:1,smsCount:20},
+                    {id:'2',create_time:'2017年8月9日',name:'智呼包月产品',seatingDecode:65,callTime:'2017年8月9日',logicalGroup:'组二',seatingCharge:3223,updateTime:'2017年8月9日',useInterfaceNum:78,useCount:43,phoneCount:2,smsCount:126},
+                    {id:'3',create_time:'2017年6月9日',name:'智呼标准产品',seatingDecode:55,callTime:'2017年6月9日',logicalGroup:'组三',seatingCharge:322,updateTime:'2017年9月9日',useInterfaceNum:56,useCount:8,phoneCount:3,smsCount:26},
+                    {id:'4',create_time:'2017年9月9日',name:'智呼包时产品',seatingDecode:765,callTime:'2017年9月9日',logicalGroup:'组四',seatingCharge:878,updateTime:'2017年6月9日',useInterfaceNum:45,useCount:457,phoneCount:4,smsCount:956}
+                ]
+            }
+        });
+    };
+    obj["/product/getInterfaceUseListByMonth.action"] = function(data, success, error) {
+        success({
+            errorcode:0,
+            errormsg:'',
+            data: {
+                list:[
+                    {id:'1',date:'2017年7月9日',name:'按次计费产品A',seatingDecode:433,callTime:'2017年7月9日',logicalGroup:'组一',seatingCharge:343,updateTime:'2017年7月9日',useCount:4,phoneCount:1,smsCount:20},
+                    {id:'2',date:'2017年8月9日',name:'智呼包月产品',seatingDecode:735,callTime:'2017年8月9日',logicalGroup:'组二',seatingCharge:7343,updateTime:'2017年8月9日',useCount:43,phoneCount:2,smsCount:126},
+                    {id:'3',date:'2017年6月9日',name:'智呼标准产品',seatingDecode:435,callTime:'2017年9月9日',logicalGroup:'组三',seatingCharge:643,updateTime:'2017年9月9日',useCount:8,phoneCount:3,smsCount:26},
+                    {id:'4',date:'2017年9月9日',name:'智呼包时产品',seatingDecode:895,callTime:'2017年6月9日',logicalGroup:'组四',seatingCharge:3343,updateTime:'2017年6月9日',useCount:457,phoneCount:4,smsCount:956}
                 ]
             }
         });
@@ -209,7 +234,7 @@ module.exports = function(obj) {
             }
         });
     };
-    //业务列表
+    //产品列表
     obj["/product/getProductList.action"] = function(data, success, error) {
         success({
             errorcode:0,
@@ -219,6 +244,20 @@ module.exports = function(obj) {
                     {id:'1',name:'费用总计',status:1,type:1,totalBuy:6855,useCount:7855,subsCharge:3000},
                     {id:'2',name:'获客专家',status:0,type:0,totalBuy:6855,useCount:3855,subsCharge:3000},
                     {id:'3',name:'智慧征信',status:0,type:0,totalBuy:6855,useCount:3855,subsCharge:3000}
+                ]
+            }
+        });
+    };
+    //产品详情列表
+    obj["/product/getProductUserDetailStat.action"] = function(data, success, error) {
+        success({
+            errorcode:0,
+            errormsg:'',
+            data: {
+                list:[
+                    {id:'1',name:'费用总计',status:1,type:1,real_name:'王宇',seatCount:334,callTime:'123',create_time:'2017-07-18',totalConsume:65,useCount:7855,subsCharge:3000},
+                    {id:'2',name:'获客专家',status:0,type:0,real_name:'张伟',seatCount:34,callTime:'666',create_time:'2017-06-23',totalConsume:855,useCount:3855,subsCharge:3000},
+                    {id:'3',name:'智慧征信',status:0,type:0,real_name:'赵云',seatCount:534,callTime:'87',create_time:'2017-08-14',totalConsume:6855,useCount:3855,subsCharge:3000}
                 ]
             }
         });

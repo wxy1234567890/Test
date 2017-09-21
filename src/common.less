@@ -662,13 +662,14 @@ input.laydate-icon{width: 190px;}
 	left: 260px;
 	right: 0;
 	bottom: 0;
-	padding: 25px 30px;
+	padding: 3px 30px;
 	overflow-y:auto;
 	
 }
 .userdtl,
 .rightcon{
 	.basicinfo{
+		margin-top:13px;
 		.title{
 			display: block;
 			margin-bottom: 10px;
@@ -752,7 +753,6 @@ input.laydate-icon{width: 190px;}
 	top:0;
 	bottom: 0;
 	overflow-y:auto;
-
 	.widthwrap{
 		width: 1200px;
 		margin: 0 auto;
@@ -805,9 +805,6 @@ input.laydate-icon{width: 190px;}
 		bottom: 0;
 		top: 0;
 		padding: 25px 30px;
-		&.rhide {
-			display: none;
-		}
 	}
 }
 /*hys-计费*/
@@ -823,15 +820,15 @@ input.laydate-icon{width: 190px;}
 .rightli{
 	cursor: pointer;
 	border-bottom: 1px solid #eaf0f7;;
-	border-left: 1px solid #eaf0f7;;
-	border-right:1px solid #eaf0f7; ;
+	border-left: 1px solid #FFF;;
+	border-right: 1px solid #FFF;;
 	width: 100%;
 }
 .lione{
 	border-top: 1px solid #eaf0f7;
 }
 .rightul{
-	margin-top: 14px;
+	margin-top: 5px;
 }
 .rightli img{
 	width: 160px;
@@ -846,11 +843,13 @@ input.laydate-icon{width: 190px;}
 	display: inline-block;
 }
 .rightli:hover{
+	border-left: 1px solid #eaf0f7;;
+	border-right: 1px solid #eaf0f7;;
 	background-color: #f3f6fc;
 }
 .rightli .name{
 	color: #354052;
-	margin: 12px 0;
+	margin-bottom: 12px;
 }
 .rightli .name span{
 	font-size: 12px;
@@ -1152,6 +1151,7 @@ padding-left: 20px !important;
 /*翻页*/
 .pagetool{
 	color: #333 !important;
+	margin: 0 auto;
 	.first-page{
 		background: url(images/first_page2.png) center center no-repeat !important;
 		border: 1px solid #e5ebf1;
@@ -1258,7 +1258,7 @@ img{
 	
 }
 .dialogdatagrid {
-    height:563px;
+    height:382px;
     margin:0 20px;
     .ai-datagrid {
      top:10px !important;
@@ -1268,34 +1268,76 @@ img{
     border-left:0px !important;
     border-right:0px !important;
 }
-
-//产品配置样式修改
-.disnone {
-	display: none !important;
+.ai-datagrid.page .dr-ft{
+	text-align: center;
 }
-.winfor li:nth-child(2n-1) {
-	margin-left: 0 !important;
+.rightul .pic1{
+ 		display: inline-block;
+        vertical-align: middle;
+        margin:0 10px;
+        em{display: inline-block;
+        width:160px;
+		height:114px;
+        line-height: 114px;
+        cursor: pointer;
+        background: url(images/pic1.png) no-repeat;}
 }
-.tabselect {
-	height: 40px;
-	border-bottom: 1px solid #e5ebf1;
-	.selected {
-		height: 39px;
-		border: 1px solid #e5ebf1;
-		border-bottom: none;
+.rightul .call1{
 		display: inline-block;
-		padding: 0 25px;
-		color: #333;
-		line-height: 40px;
-		background: #f3f6fc;
-		margin-right: -1px;
-		vertical-align: top;
-		cursor: default;
-		&.cur {
-			height: 40px;
-			border-top: 2px solid #3083eb;
-			background: #fff;
-			color: #3083eb;
-		}
-	}
+        vertical-align: middle;
+        margin:0 10px;
+        em{display: inline-block;
+        width:160px;
+		height:114px;
+        line-height: 114px;
+        cursor: pointer;
+		background: url(images/call1.png) no-repeat;}
+}
+.navigate{
+	width:98%;
+	height:29px;
+	float: left;
+	border-bottom: 1px solid #dedede;   
+    line-height: 1.54;
+    font-size: 0;
+    margin:0 20px 20px 20px;
+}
+.navigate:after{
+	display: block;
+    height: 0;
+    content: "";
+    clear: both;
+    visibility: hidden;
+}
+.navigate span{
+    display: inline-block;
+    margin-bottom: -1px;
+    padding: 3px 15px;
+    vertical-align: bottom;
+    border-style: solid;
+    border-width: 2px 1px 0;
+    border-color: #dedede #e4e4e4;
+    background-color: #e4e4e4;
+    list-style: none;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 13px;    
+}
+.navigate .active{
+		display: block;
+        border-color: #2c99ff #e4e4e4 #FFF #dedede;
+	    background-color: #FFF;
+	    border-bottom:1px solid #FFF;
+	    color: #000;
+	    cursor: default;
+}
+.hide{
+	visibility :hidden;
+}
+.timeinput{
+  background: url("images/date.png") no-repeat 98% center;
+}
+.mb-12{
+	margin-bottom:12px;
 }

@@ -12,6 +12,7 @@ var List = Backbone.Collection.extend({
             id:option.param.businessId
         };
         option.success = function(data) {
+            console.log(data);
             this.set(data);
             this.trigger("fetchDone");
         }.bind(this);
