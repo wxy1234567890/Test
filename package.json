@@ -5,6 +5,7 @@
   "main": "index.html",
   "scripts": {
     "start": "node server.js",
+    "rstart": "export NODE_ENV=develop-hot&&npm run start",
     "test": "test is not avaliable now!",
     "stop": "stop is not avaliable now!",
     "build-dev": "webpack --progress -v -c --profile -w",
