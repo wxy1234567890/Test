@@ -46,8 +46,8 @@
 
 .wright {
     /* width: 44%; */
-    display: inline-block;
-    margin-left: 270px;
+  /*  display: inline-block;*/
+   /* margin-left: 270px;*/
     /* float: right; */
 }
 
@@ -201,7 +201,9 @@
 .wradiobtnw{
 	margin-left: 100px;
 }
-
+.wradiobtnw1{
+	margin-left: 58px;
+}
 .wuserinfo{
 	height: 200px;
 }
@@ -215,7 +217,7 @@
 	margin-bottom: 5px;
 }
 
-#wechart{
+#wechart, #wechart2{
 	width: 583px;
 	height:400px;
 	display: inline-block;

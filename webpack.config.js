@@ -26,7 +26,8 @@ var webpackConfig,
 			model: path.join(__dirname, "src/models"),
 			collection: path.join(__dirname, "src/collections"),
 			laydate:path.join(__dirname,'lib/laydate/laydate.js'),
-      terseui:path.join(__dirname,'lib/terseui.js')
+      terseui:path.join(__dirname,'lib/terseui.js'),
+      kindeditor:path.join(__dirname,'lib/kindeditor/kindeditor.min.js')
 		}
   };
 /* resolve */

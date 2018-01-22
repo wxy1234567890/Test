@@ -40,6 +40,19 @@ module.exports = function(obj) {
         {
           key:'colmanage',
           name:'目录配置'
+        },
+        {
+          key:'serviceTest',
+          name:'服务测试'
+        },{
+          key:'apiMenuConfig',
+          name:'api目录配置'
+        },{
+          key:'apiUse',
+          name:'api使用说明'
+        },{
+          key:'apiTotalMenu',
+          name:'api总目录'
         }]
       },
       {

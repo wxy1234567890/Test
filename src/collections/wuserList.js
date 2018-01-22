@@ -8,15 +8,18 @@ var List = Backbone.Collection.extend({
     fetch:function(option){
         option.loadingText = "正在加载数据,请稍候!";
         option.url = "/product/getProductUserDetailStat.action";
-        option.data = {
-            productId:option.param.userId,
-            pagesize:"10",
-            pagenow:"1",
-            month:"2017-07"
-        };
+        option.data = option.param;
+        // option.data = {
+        //     productId:option.param.userId,
+        //     pagesize:"10",
+        //     pagenow:"1",
+        //     month:option.param.month||"2017-09",
+        //     feeOrder:option.param.feeOrder||"2"
+        // };
         option.success = function(data) {
             this.set(data.list);
-            this.trigger("fetchDone");
+            // this.set(data.totalCount);
+            this.trigger("fetchDone",data.totalCount);
         }.bind(this);
         AJAX_POST(option);
     }

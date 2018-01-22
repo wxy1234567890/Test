@@ -1,5 +1,6 @@
 var React = require('react');
 var ReactDom = require('react-dom');
+var classNames = require("classnames/bind");
 var userList = require('collection/appList');
 var userBusiness = require('collection/userBusiness');
 var interfaceApp = require('collection/interfaceApp');
@@ -8,6 +9,7 @@ var subject = require("model/global/subject");
 var TerseUI = require('terseui');
 var modalHelp = TerseUI.Frame.modalHelp;
 var Dialog = TerseUI.Frame.Dialog;
+var Scroll = TerseUI.Scroll;
 var editDialog = require("./edit.jsx");
 var editAppDialog = require("./editApp.jsx");
 var addDialog = require("./add.jsx");
@@ -23,7 +25,7 @@ var InterfaceList = React.createClass({
 		var interfaceList = this.props.option;
 		var lable = this.props.lableo;
 		if(lable.table17=="1"){
-			var arr = ["name","argsNum","create_time","description"];
+			var arr = ["name","argsNum","pre_auth","description"];
 			var arg1 = "需要";
 			var arg2 = "不需要"; 
 		}
@@ -72,6 +74,7 @@ var InterfaceList = React.createClass({
 var InterfaceApp = React.createClass({
 	getInitialState:function(){
 		return{
+			flag:-1,
 			interfaceApp :new interfaceApp()
 		};
 	},
@@ -91,7 +94,11 @@ var InterfaceApp = React.createClass({
 			}
 		});
 	},
-	toRenderRight:function (id) {
+	toRenderRight:function (id,index) {
+		this.state.flag=index;
+		this.setState({
+			flag:this.state.flag
+		});
 		this.props.getDetail(id);
 	},
 	render:function(){
@@ -100,10 +107,9 @@ var InterfaceApp = React.createClass({
 				{this.state.interfaceApp.map(function(item,index){
 					return (
 						<div key={index}>
-								<div className="imfordtl txtright">
-								<img className="wimg" src={require( "../../../images/icon-detail-active.png")} />
-									<span className="wspan" onClick={this.toRenderRight.bind(this,item.get('id'))}>{item.get('name')}</span>
-								</div>
+							<div className="imfordtl" style={{"marginTop":"10px"}}>
+								<span className={this.state.flag==index?"wspan1":"wspan2"} onClick={this.toRenderRight.bind(this,item.get('id'),index)}>{item.get('name')}</span>
+							</div>
 					    </div>
 					)
 				}.bind(this))}
@@ -122,42 +128,85 @@ var UserList = React.createClass({
 	// 	}
 	// }	
 	// },
-	showAppInfo:function (e) {
-		if($(".table18,.table11").css("display")=="none"){
-			$(".table18,.table11").css("display","inline-block");
+	getInitialState:function(){
+		return{
+			status:-1,
+			flag:1,
+			userName:''
+		};
+	},
+    choseUserName: function (value) {
+        if (value.indexOf(this.state.userName) == -1) {
+            return false;
+        }
+        return true;
+    },
+	showAppInfo:function (index,e) {
+		// if($(".table18,.table11").css("display")=="none"){
+		// 	$(".table18,.table11").css("display","inline-block");
+		// }
+		// if($(".changeimg").css("transform")=="rotate(90deg)"){
+		// 	$(".changeimg").css("transform","rotate(0deg)");
+		// }else{
+		// 	$(".changeimg").css("transform","rotate(90deg)");
+		// }
+		// console.log(index)
+		// var targete = e.target.parentNode.parentNode;
+		// var numx = targete.getElementsByClassName('txtright').length;
+		// var numx2 = targete.getElementsByClassName('imfordtl2').length;
+		// if(numx!=0){
+		// 	for (var i = 0; i < numx; i++) {
+		// 		targete.getElementsByClassName('txtright')[0].setAttribute('class','imfordtl2');
+		// 	}
+		// }else{
+		// 	for (var i = 0; i < numx2; i++) {
+		// 		targete.getElementsByClassName('imfordtl2')[0].setAttribute('class','txtright');
+		// 	}
+		// }
+		// var imgChild = e.target.parentNode.parentNode.childNodes[0];
+		// console.log(e.target.parentNode.parentNode,e.target.parentNode.parentNode.childNodes,imgChild);
+		// if(imgChild.getAttribute('class')=='wimg1'){
+		// 	imgChild.setAttribute('class','wimg2');
+		// }else{
+		// 	imgChild.setAttribute('class','wimg1');
+		// }
+		if(this.state.status==index){
+			this.state.status=-1;
+			this.setState({
+				status:this.state.status
+			});
+		}else{
+			this.state.status=index;
+			this.setState({
+				status:this.state.status
+			});
 		}
-		var targete = e.target.parentNode.parentNode;
-		var numx = targete.getElementsByClassName('txtright').length;
-		var numx2 = targete.getElementsByClassName('imfordtl2').length;
-		if(numx!=0){
-		for (var i = 0; i < numx; i++) {
-			targete.getElementsByClassName('txtright')[0].setAttribute('class','imfordtl2');
-		}
-	}else{
-		for (var i = 0; i < numx2; i++) {
-			targete.getElementsByClassName('imfordtl2')[0].setAttribute('class','txtright');
-		}
-	}
 		var targete1 = e.target;
 		var id = targete1.getAttribute("itemID");
 		this.props.getAppInfo(id);
-},
+	},
 	render:function(){
-		var userList = this.props.option;
+		var option = this.props.option; 
+		var userList = option.option1;
+		this.state.userName = option.option2;
 		return (
 			<ul>
 				{userList.map(function(item,index){
+					if(this.choseUserName(item.get('name'))){
 					return (
 						<li key={index} className="clearfix">
 							<div className="userimfor fl wuserinfoxx">
-							<img className="wimg" src={require( "../../../images/open.png")} />
-								<div className="imfordtl"  itemID={item.get('id')}  onClick={this.showAppInfo}>
+								<img className={this.state.status==index?"wimg2":"wimg1"} src={require( "../../../images/open.png")}/>
+								<div className="imfordtl"  itemID={item.get('id')}  onClick={this.showAppInfo.bind(this,index)}>
 									<span className="wspan" itemID={item.get('id')}>{item.get('name')}</span>
 								</div>
-								<InterfaceApp option={item.get('id')} getDetail={this.props.getDetail}/>
+								<div className={this.state.status==index?"imfordtl2":"txtright"}>
+									<InterfaceApp option={item.get('id')} getDetail={this.props.getDetail}/>
+								</div>
 							</div>
 						</li>
 					)
+					}
 				}.bind(this))}
 			</ul>
 		)
@@ -226,7 +275,7 @@ var DevLop = React.createClass({
 					table6:"负责人邮箱",
 					table7:"应用描述",
 					table8:"编辑应用",
-					table9:"删除应用",
+					table9: "删除应用",
 					table10:"应用接口管理",
 					table11:"新建接口",
 					table12:"接口中文名称",
@@ -291,7 +340,7 @@ var DevLop = React.createClass({
 					table1:"创建日期",
 					table2:"内部调用URL",
 					table3:"外部调用URL",
-					table4:"内部调用KEY",
+					table4:"外部调用KEY",
 					table5:"外部API Code",
 					table6:"接口描述",
 					table8:"编辑接口",
@@ -299,7 +348,7 @@ var DevLop = React.createClass({
 					table10:"参数配置管理",
 					table11:"新建配置",
 					table12:"对内参数",
-					table13:"对外参数",
+					table13:"参数说明",
 					table14:"是否可以为空",
 					table15:"创建日期",
 					table16:"操作",
@@ -423,59 +472,63 @@ var DevLop = React.createClass({
 		})
 	},
 	render:function(){
+		var optionInfo = {
+			option1:this.state.userList,
+			option2:this.state.userName
+		};
 		var appInfo = this.state.appInfo.attributes;
     	return (
-    		<div>
-				<div className="userlist">
+    		<div className="userlist">
+				<Scroll className="leftcon">
 					<div className="search-area ml-20 mr-20 mb-10 clearfix">
 						<div className="search-box pos-relative fl wsearchbox">
 							<input placeholder="请输入查询内容" className="s-text" type="text" value={this.state.userName} onChange={this.userNameChange}/>
-							<span className="s-btn" onClick={this.searchInterface}></span>
+							<span className="s-btn"></span>
 							<em className="del cursor pos-absolute"></em>
 						</div>
 					</div>
-					<UserList option={this.state.userList} getAppInfo={this.getAppInfo}   getDetail={this.getInterDetail} searchInterface={this.state.searchInterface}/>
-				</div>
-				<div className="wright" id="wright">
-				<div className="wtitle1">{this.state.lable.table0}</div>
-				<span className="btn white mr-10 table18" onClick={this.newClick}>{this.state.lable.table18}</span>
-				<span className="btn white mr-10" onClick={this.editClick}>{this.state.lable.table8}</span>
-				<span className="btn white mr-10">{this.state.lable.table9}</span>
-				<div className="txtlistwrap clearfix wtxt">
-					<ul className="infor-ul fl  winfor">
-						<li className="clearfix">
-							<span className="name fl">{this.state.lable.table1}</span>
-							<span className="key fr ellipsis">{this.state.lable2.table1}</span>
-						</li>
-						<li className="clearfix">
-							<span className="name fl">{this.state.lable.table2}</span>
-							<span className="key fr ellipsis">{this.state.lable2.table2}</span>
-						</li>
-						<li className="clearfix">
-							<span className="name fl">{this.state.lable.table3}</span>
-							<span className="key fr ellipsis">{this.state.lable2.table3}</span>
-						</li>
-						<li className="clearfix">
-							<span className="name fl">{this.state.lable.table4}</span>
-							<span className="key fr ellipsis">{this.state.lable2.table4}</span>
-						</li>
-						<li className="clearfix">
-							<span className="name fl">{this.state.lable.table5}</span>
-							<span className="key fr ellipsis">{this.state.lable2.table5}</span>
-						</li>
-						<li className="clearfix">
-							<span className="name fl">{this.state.lable.table6}</span>
-							<span className="key fr ellipsis">{this.state.lable2.table6}</span>
-						</li>
-						<li className="clearfix">
-							<span className="name fl">{this.state.lable.table7}</span>
-							<span className="key fr ellipsis">{this.state.lable2.table7}</span>
-						</li>
-					</ul>
-				</div>
-				<div className="wtitle1">{this.state.lable.table10}</div>
-				<span className="btn white mr-10 table11" onClick={this.addClick}>{this.state.lable.table11}</span>
-				<InterfaceList option={this.state.appandinterface?this.state.interfaceList:this.state.getArgsList} lableo={this.state.lable}/>
+					<UserList option={optionInfo} getAppInfo={this.getAppInfo}   getDetail={this.getInterDetail} searchInterface={this.state.searchInterface}/>
+				</Scroll>
+				<div className="wright userdtl" id="wright">
+					<div className="wtitle1">{this.state.lable.table0?this.state.lable.table0:"暂无数据"}</div>
+					<span className="btn white mr-10 table18" onClick={this.newClick}>{this.state.lable.table18?this.state.lable.table18:"暂无数据"}</span>
+					<span className="btn white mr-10" onClick={this.editClick}>{this.state.lable.table8?this.state.lable.table8:"暂无数据"}</span>
+					<span className="btn white mr-10" style={{"display":"none"}}>{this.state.lable.table9?this.state.lable.table9:"暂无数据"}</span>
+					<div className="txtlistwrap clearfix wtxt">
+						<ul className="infor-ul fl  winfor">
+							<li className="clearfix">
+								<span className="name fl">{this.state.lable.table1?this.state.lable.table1:"暂无数据"}</span>
+								<span className="key fr ellipsis">{this.state.lable2.table1?this.state.lable2.table1:"暂无数据"}</span>
+							</li>
+							<li className="clearfix">
+								<span className="name fl">{this.state.lable.table2?this.state.lable.table2:"暂无数据"}</span>
+								<span className="key fr ellipsis">{this.state.lable2.table2?this.state.lable2.table2:"暂无数据"}</span>
+							</li>
+							<li className="clearfix">
+								<span className="name fl">{this.state.lable.table3?this.state.lable.table3:"暂无数据"}</span>
+								<span className="key fr ellipsis">{this.state.lable2.table3?this.state.lable2.table3:"暂无数据"}</span>
+							</li>
+							<li className="clearfix">
+								<span className="name fl">{this.state.lable.table4?this.state.lable.table4:"暂无数据"}</span>
+								<span className="key fr ellipsis">{this.state.lable2.table4?this.state.lable2.table4:"暂无数据"}</span>
+							</li>
+							<li className="clearfix">
+								<span className="name fl">{this.state.lable.table5?this.state.lable.table5:"暂无数据"}</span>
+								<span className="key fr ellipsis">{this.state.lable2.table5?this.state.lable2.table5:"暂无数据"}</span>
+							</li>
+							<li className="clearfix">
+								<span className="name fl">{this.state.lable.table6?this.state.lable.table6:"暂无数据"}</span>
+								<span className="key fr ellipsis">{this.state.lable2.table6?this.state.lable2.table6:"暂无数据"}</span>
+							</li>
+							<li className="clearfix">
+								<span className="name fl">{this.state.lable.table7?this.state.lable.table7:"暂无数据"}</span>
+								<span className="key fr ellipsis">{this.state.lable2.table7?this.state.lable2.table7:"暂无数据"}</span>
+							</li>
+						</ul>
+					</div>
+					<div className="wtitle1">{this.state.lable.table10?this.state.lable.table10:"暂无数据"}</div>
+					<span className="btn white mr-10 table11" onClick={this.addClick}>{this.state.lable.table11?this.state.lable.table11:"暂无数据"}</span>
+					<InterfaceList option={this.state.appandinterface?this.state.interfaceList:this.state.getArgsList} lableo={this.state.lable}/>
 				</div>
 			</div>
     	)

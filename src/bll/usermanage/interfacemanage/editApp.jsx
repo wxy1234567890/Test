@@ -1,7 +1,9 @@
 var React = require("react");
+var TerseUI = require('terseui');
 var interfaceAdd = require('collection/appEdit');
 var interfaceCodeValid = require('collection/interfaceCodeValidapp');
-
+var modalHelp = TerseUI.Frame.modalHelp;
+var Dialog = TerseUI.Frame.Dialog;
 var Add = React.createClass({
 	getInitialState:function(){
 		var appInfo = window.appInfo.attributes;
@@ -37,19 +39,52 @@ var Add = React.createClass({
 		this.state.interfaceCodeValid.fetch({
 			loadingFlag:true,
 			param:{
-				code:this.state.code
+				code:this.state.app_id
 			}
 		});
 	},
 	componentDidMount: function() {
-		this.state.interfaceCodeValid.on("fetchDone",function(){
+		this.state.interfaceCodeValid.on("fetchDone",function(data){
+			this.state.userList=data;
 			this.setState({
-				userList:this.state.userList
+				userList:data
 			});
-			this.interfaceAdd();
+			if(this.state.userList==1){
+				this.interfaceAdd();
+			}else if(this.state.userList==0){
+				modalHelp.show({
+					Dialog: Dialog,
+					option: {
+						type: "error",
+						title: "提示",
+						content: "编码不唯一",
+						ok: {
+							text: "关闭",
+							callback: function() {
+								location.reload();
+							}
+						},
+						close: {
+							callback: function() {
+								location.reload();
+							}
+						}
+					}
+				});
+			}
 		}.bind(this));
-		this.state.interfaceAdd.on("fetchDone",function(){
-		})},
+		this.state.interfaceAdd.on("fetchDone",function(data){
+			modalHelp.show({
+				Dialog: Dialog,
+				option: {
+					type: "success",
+					title: "提示",
+					content: "编辑应用成功",
+					ok: {text: "好的"}
+				}
+			});
+		}.bind(this));
+	},
 	interfaceAdd:function(){
 		var singlearr = [];
 		var singleobj = {};
@@ -163,7 +198,7 @@ var Add = React.createClass({
 			<div className="dialog-confirm addif addyw">
 
 				<div className="dialog-hd clearfix">
-					<h2>新建应用</h2>
+					<h2>编辑应用</h2>
 					<span className="close" onClick={this.closeHandler}>×</span>
 				</div>
 

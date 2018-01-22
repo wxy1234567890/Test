@@ -69,15 +69,29 @@ var ChargeInfo = React.createClass({
 
 //用户列表
 var UserList = React.createClass({
+	getInitialState: function () {	
+        return {
+			userName:''
+        }
+    },
 	toShowUserInfo:function (userId,company_id) {
 		//调用父类中方法
 		this.props.getUserInfo(userId,company_id);
 	},
+    choseUserName: function (value) {
+        if (value.indexOf(this.state.userName) == -1) {
+            return false;
+        }
+        return true;
+    },
 	render: function() {
-		var userList = this.props.option;
+		var option = this.props.option; 
+		var userList = option.option1;
+		this.state.userName = option.option2;
 		return(
 			<ul>
 				{userList.map(function(item,index){
+					if(this.choseUserName(item.get('real_name'))){
 					return (
 						<li key={index} className="clearfix" onClick={this.toShowUserInfo.bind(this,item.get('id'),item.get('company_id'))}>
 							<div className="userimfor fl">
@@ -90,6 +104,7 @@ var UserList = React.createClass({
 							<div className="fr ic-lock mt-10"></div>
 						</li>
 					)
+					}
 				}.bind(this))}
 			</ul>
 		)
@@ -254,6 +269,7 @@ var UserManage = React.createClass({
 		};
 	},
 	componentDidMount: function() {
+
 		this.state.userList.on("fetchDone",function(){
 			this.setState({
 				userList:this.state.userList
@@ -328,7 +344,7 @@ var UserManage = React.createClass({
 				pagenow: "1"
 			}
 		});
-		if (company_id!=0) {
+		if(company_id!=0) {
 		document.getElementById("companyInfo").setAttribute("class","txtlistwrap")
 		this.state.companyInfo.fetch({
 			loadingFlag:true,
@@ -336,8 +352,7 @@ var UserManage = React.createClass({
 				company_id:company_id
 			}
 		});
-		}
-		else{
+		}else{
 			document.getElementById("companyInfo").setAttribute("class","txtlistwrap wcompany")
 		}
 		this.state.userBusinessList.fetch({
@@ -347,13 +362,19 @@ var UserManage = React.createClass({
 			}
 		});
 	},
-	freezeAccount:function (userId) {
+	freezeAccount:function (userId,status) {
+		var Text;
+		if(status == 0 ){
+			Text = "您确定要解冻该用户信息吗?";
+		}else{
+			Text = "您确定要冻结该用户信息吗?";
+		}
 		modalHelp.show({
 			Dialog: Dialog,
 			option: {
 				type: "question",
 				title: "确认",
-				content: "确定要冻结该用户信息?",
+				content: status == 0?"您确定要解冻该用户信息吗?":"您确定要冻结该用户信息吗?",
 				ok: {
 					callback: function() {
 						this.state.userFreeze.userFreezeDoing({
@@ -422,7 +443,7 @@ var UserManage = React.createClass({
 				userId:userId,
 				ok:{
 					callback:function(){
-
+						
 					}.bind(this)
 				}
 			}
@@ -475,69 +496,76 @@ var UserManage = React.createClass({
 		});
 	},
 	render: function() {
+		var optionInfo = {
+			option1:this.state.userList,
+			option2:this.state.userName
+		};
 		return (
-			<div>
-				<Scroll className="userlist">
+			<div className="userlist">
+				<Scroll className="leftcon">
 					<div className="search-area ml-20 mr-20 mb-10 clearfix">
 						<div className="search-box w160 pos-relative fl">
 							<input placeholder="请输入查询内容" className="s-text" type="text" value={this.state.userName} onChange={this.userNameChange}/>
-							<span className="s-btn" onClick={this.getUserList}></span>
+							<span className="s-btn"></span>
 							<em className="del cursor pos-absolute"></em>
 						</div>
 						<span className="btn green ml-5 fl" onClick={this.createuser}>新建</span>
 					</div>
-					<UserList option={this.state.userList} getUserInfo={this.getUserInfo}/>
+					<UserList option={optionInfo} getUserInfo={this.getUserInfo}/>
 				</Scroll>
-				<div className="userdtl">
-					<div className="basicinfo">
-						<div className="title ellipsis">{this.state.userInfo.attributes.real_name}</div>
-						<div className="btnarea mb-40">
-							<span className="btn white mr-10" onClick={this.freezeAccount.bind(this,this.state.userInfo.attributes.id)}>冻结账户</span>
-							<span className="btn white mr-10" onClick={this.toEditUserInfo}>编辑资料</span>
-							<span className="btn white mr-10" onClick={this.resetPwd.bind(this,this.state.userInfo.attributes.id)}>重置密码</span>
-							<span className="btn white mr-10" onClick={this.seatingInfo.bind(this,this.state.userInfo.attributes.id)}>坐席信息</span>
+				<div className={this.state.userList.length==0?"hide":""}>
+					<div className="userdtl">
+						<div className="basicinfo">
+							<div className="title ellipsis">{this.state.userInfo.attributes.real_name}</div>
+							<div className="btnarea mb-40">
+								<span className="btn white mr-10" onClick={this.freezeAccount.bind(this,this.state.userInfo.attributes.id,this.state.userInfo.attributes.status)}>{this.state.userInfo.attributes.status==0?'解冻账户':'冻结账户'}</span>
+								<span className="btn white mr-10" onClick={this.toEditUserInfo}>编辑资料</span>
+								<span className="btn white mr-10" onClick={this.resetPwd.bind(this,this.state.userInfo.attributes.id)}>重置密码</span>
+								<span className="btn white mr-10" onClick={this.seatingInfo.bind(this,this.state.userInfo.attributes.id)}>坐席信息</span>
+							</div>
+						</div>
+
+					<div className="txtlistwrap clearfix">
+						<ul className="infor-ul fl  winfor">
+							<li className="clearfix">
+								<span className="name fl">付费类型</span>
+								<span className="key fr ellipsis">{this.state.userInfo.attributes.charge_type==2?"后付费用户":"预付费用户"}</span>
+							</li>
+							<li className="clearfix">
+								<span className="name fl">冻结状态</span>
+								<span className="key fr ellipsis">{this.state.userInfo.attributes.status==0?"冻结":"未冻结"}</span>
+							</li>
+							<li className="clearfix">
+								<span className="name fl">当前余额</span>
+								<span className="key fr ellipsis">{this.state.userInfo.attributes.balance}</span>
+							</li>
+							<li className="clearfix">
+								<span className="name fl">创建时间</span>
+								<span className="key fr ellipsis">{this.state.userInfo.attributes.create_time}</span>
+							</li>
+							<li className="clearfix">
+								<span className="name fl">用户描述</span>
+								<span className="key fr ellipsis">{this.state.userInfo.attributes.description}</span>
+							</li>
+						</ul>
+					</div>
+					<div>
+						<div className="titdiv clearfix mb-10 wmt wpropei">
+							<span className="f14 fl"><b>产品配置</b></span>
+							<span className="btn white s fr" onClick={this.addClick}>添加</span>
+						</div>
+						<UserB option={this.state.userBusinessList}/>
+						<div className="titdiv clearfix mb-10 wmt">
+							<span className="f14 fl"><b>用户充值记录</b></span>
+							<span className="btn white s fr" onClick={this.chargeClick}>充值</span>
+						</div>
+						<ChargeInfo option={this.state.chargeInfo}/>
+						<div className="txtlistw50 clearfix wover">
+							<UserInfo option={this.state.userInfo}/>
+							<UserCompany option={this.state.companyInfo}/>
 						</div>
 					</div>
-				<div className="txtlistwrap clearfix">
-					<ul className="infor-ul fl  winfor">
-						<li className="clearfix">
-							<span className="name fl">付费类型</span>
-							<span className="key fr ellipsis">{this.state.userInfo.attributes.charge_type==2?"后付费用户":"预付费用户"}</span>
-						</li>
-						<li className="clearfix">
-							<span className="name fl">冻结状态</span>
-							<span className="key fr ellipsis">{this.state.userInfo.attributes.status==0?"冻结":"未冻结"}</span>
-						</li>
-						<li className="clearfix">
-							<span className="name fl">当前余额</span>
-							<span className="key fr ellipsis">{this.state.userInfo.attributes.balance}</span>
-						</li>
-						<li className="clearfix">
-							<span className="name fl">创建时间</span>
-							<span className="key fr ellipsis">{this.state.userInfo.attributes.create_time}</span>
-						</li>
-						<li className="clearfix">
-							<span className="name fl">用户描述</span>
-							<span className="key fr ellipsis">{this.state.userInfo.attributes.description}</span>
-						</li>
-					</ul>
-				</div>
-				<div>
-					<div className="titdiv clearfix mb-10 wmt wpropei">
-						<span className="f14 fl"><b>产品配置</b></span>
-						<span className="btn white s fr" onClick={this.addClick}>添加</span>
-					</div>
-					<UserB option={this.state.userBusinessList}/>
-					<div className="titdiv clearfix mb-10 wmt">
-						<span className="f14 fl"><b>用户充值记录</b></span>
-						<span className="btn white s fr" onClick={this.chargeClick}>充值</span>
-					</div>
-					<ChargeInfo option={this.state.chargeInfo}/>
-					<div className="txtlistw50 clearfix wover">
-						<UserInfo option={this.state.userInfo}/>
-						<UserCompany option={this.state.companyInfo}/>
-					</div>
-				</div>
+      			</div>
       		</div>
       	</div>
 		)

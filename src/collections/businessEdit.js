@@ -16,7 +16,8 @@ var Model = Backbone.Model.extend({
             bundle_price:option.param.bundle_price,
             out_bundle_use:option.param.out_bundle_use,
             charge_date:option.param.charge_date,
-            interfaceJSONArrStr:option.param.interfaceJSONArrStr
+            interfaceJSONArrStr:option.param.interfaceJSONArrStr,
+            description:option.param.description
         };
         option.success = function(data) {
             this.set(data);

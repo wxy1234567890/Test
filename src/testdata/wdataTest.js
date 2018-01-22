@@ -80,13 +80,16 @@ module.exports = function(obj) {
             errormsg:'',
             data: {
                 list:[
-                    {id:'1',name:'按次计费产品A',productType:1,subsTotal:20,useTotal:30,useCount:4},
-                    {id:'2',name:'智呼包月产品',productType:0,subsTotal:126,useTotal:52,useCount:43},
-                    {id:'3',name:'智呼标准产品',productType:0,subsTotal:26,useTotal:60,useCount:8},
-                    {id:'4',name:'智呼包时产品',productType:0,subsTotal:956,useTotal:6529,useCount:7863}
+                    {id:'1',name:'按次计费产品A',productType:0,subsTotal:20,useCount:30,useTotal:34},
+                    {id:'2',name:'智呼包月产品',productType:1,subsTotal:126,agentCount:52,totalFee:143,callTimeSum:30},
+                    {id:'3',name:'智呼标准产品',productType:1,subsTotal:26,agentCount:60,totalFee:86,callTimeSum:30},
+                    {id:'4',name:'智呼包时产品',productType:1,subsTotal:956,agentCount:6529,totalFee:863,callTimeSum:30}
                 ]
             }
         });
+    };
+    obj["/callProduct/getAgentStatByProduct.action"] = function(data, success, error) {
+        success({"data":{"callFeeSum":25.5,"callLengthSum":0,"list":[{"updateDate":"2017-09-06 05:09:15","code":"agentA","totalFee":24,"groupId":2,"callTimeSum":12},{"updateDate":"2017-09-13 10:09:28","code":"agentF","totalFee":0.9,"groupId":2,"callTimeSum":9},{"updateDate":"2017-09-13 10:09:57","code":"agentE","totalFee":0.6,"groupId":2,"callTimeSum":6}],"totalCount":3},"errorcode":0,"errormsg":"智呼产品的坐席统计列表查询成功"});
     };
     obj["/product/getInterfaceUseListByMonthByDay.action"] = function(data, success, error) {
         success({
@@ -94,9 +97,9 @@ module.exports = function(obj) {
             errormsg:'',
             data: {
                 list:[
-                    {id:'1',create_time:'2017年7月9日',name:'按次计费产品A',seatingDecode:43,callTime:'2017年7月9日',logicalGroup:'组一',seatingCharge:4343,updateTime:'2017年7月9日',useInterfaceNum:33,useCount:4,phoneCount:1,smsCount:20},
-                    {id:'2',create_time:'2017年8月9日',name:'智呼包月产品',seatingDecode:65,callTime:'2017年8月9日',logicalGroup:'组二',seatingCharge:3223,updateTime:'2017年8月9日',useInterfaceNum:78,useCount:43,phoneCount:2,smsCount:126},
-                    {id:'3',create_time:'2017年6月9日',name:'智呼标准产品',seatingDecode:55,callTime:'2017年6月9日',logicalGroup:'组三',seatingCharge:322,updateTime:'2017年9月9日',useInterfaceNum:56,useCount:8,phoneCount:3,smsCount:26},
+                    {id:'1',create_time:'2017年7月9日',name:'按次计费产品A',seatingDecode:43,callTime:'2017年7月9日',logicalGroup:'组一',seatingCharge:4343,updateTime:'2017年7月9日',useInterfaceNum:33,useCount:34,phoneCount:1,smsCount:20},
+                    {id:'2',create_time:'2017年8月9日',name:'智呼包月产品',seatingDecode:65,callTime:'2017年8月9日',logicalGroup:'组二',seatingCharge:3223,updateTime:'2017年8月9日',useInterfaceNum:78,useCount:143,phoneCount:2,smsCount:126},
+                    {id:'3',create_time:'2017年6月9日',name:'智呼标准产品',seatingDecode:55,callTime:'2017年6月9日',logicalGroup:'组三',seatingCharge:322,updateTime:'2017年9月9日',useInterfaceNum:56,useCount:86,phoneCount:3,smsCount:26},
                     {id:'4',create_time:'2017年9月9日',name:'智呼包时产品',seatingDecode:765,callTime:'2017年9月9日',logicalGroup:'组四',seatingCharge:878,updateTime:'2017年6月9日',useInterfaceNum:45,useCount:457,phoneCount:4,smsCount:956}
                 ]
             }
@@ -108,9 +111,9 @@ module.exports = function(obj) {
             errormsg:'',
             data: {
                 list:[
-                    {id:'1',date:'2017年7月9日',name:'按次计费产品A',seatingDecode:433,callTime:'2017年7月9日',logicalGroup:'组一',seatingCharge:343,updateTime:'2017年7月9日',useCount:4,phoneCount:1,smsCount:20},
-                    {id:'2',date:'2017年8月9日',name:'智呼包月产品',seatingDecode:735,callTime:'2017年8月9日',logicalGroup:'组二',seatingCharge:7343,updateTime:'2017年8月9日',useCount:43,phoneCount:2,smsCount:126},
-                    {id:'3',date:'2017年6月9日',name:'智呼标准产品',seatingDecode:435,callTime:'2017年9月9日',logicalGroup:'组三',seatingCharge:643,updateTime:'2017年9月9日',useCount:8,phoneCount:3,smsCount:26},
+                    {id:'1',date:'2017年7月9日',name:'按次计费产品A',seatingDecode:433,callTime:'2017年7月9日',logicalGroup:'组一',seatingCharge:343,updateTime:'2017年7月9日',useCount:34,phoneCount:1,smsCount:20},
+                    {id:'2',date:'2017年8月9日',name:'智呼包月产品',seatingDecode:735,callTime:'2017年8月9日',logicalGroup:'组二',seatingCharge:7343,updateTime:'2017年8月9日',useCount:143,phoneCount:2,smsCount:126},
+                    {id:'3',date:'2017年6月9日',name:'智呼标准产品',seatingDecode:435,callTime:'2017年9月9日',logicalGroup:'组三',seatingCharge:643,updateTime:'2017年9月9日',useCount:86,phoneCount:3,smsCount:26},
                     {id:'4',date:'2017年9月9日',name:'智呼包时产品',seatingDecode:895,callTime:'2017年6月9日',logicalGroup:'组四',seatingCharge:3343,updateTime:'2017年6月9日',useCount:457,phoneCount:4,smsCount:956}
                 ]
             }
@@ -241,23 +244,51 @@ module.exports = function(obj) {
             errormsg:'',
             data: {
                 list:[
-                    {id:'1',name:'费用总计',status:1,type:1,totalBuy:6855,useCount:7855,subsCharge:3000},
-                    {id:'2',name:'获客专家',status:0,type:0,totalBuy:6855,useCount:3855,subsCharge:3000},
-                    {id:'3',name:'智慧征信',status:0,type:0,totalBuy:6855,useCount:3855,subsCharge:3000}
+                    {id:'1',name:'费用总计',status:0,type:0,totalBuy:6855,useCount:7855,subsCharge:3000},
+                    {id:'2',name:'获客专家',status:1,type:1,totalBuy:6855,useCount:3855,subsCharge:3000},
+                    {id:'3',name:'智慧征信',status:1,type:1,totalBuy:6855,useCount:3855,subsCharge:3000}
                 ]
             }
         });
     };
-    //产品详情列表
+    //接口类产品详情列表
     obj["/product/getProductUserDetailStat.action"] = function(data, success, error) {
         success({
             errorcode:0,
             errormsg:'',
             data: {
                 list:[
-                    {id:'1',name:'费用总计',status:1,type:1,real_name:'王宇',seatCount:334,callTime:'123',create_time:'2017-07-18',totalConsume:65,useCount:7855,subsCharge:3000},
-                    {id:'2',name:'获客专家',status:0,type:0,real_name:'张伟',seatCount:34,callTime:'666',create_time:'2017-06-23',totalConsume:855,useCount:3855,subsCharge:3000},
-                    {id:'3',name:'智慧征信',status:0,type:0,real_name:'赵云',seatCount:534,callTime:'87',create_time:'2017-08-14',totalConsume:6855,useCount:3855,subsCharge:3000}
+                    {id:'1',name:'费用总计',status:0,type:0,real_name:'王宇',seatCount:334,callTime:'123',create_time:'2017-07-18',totalConsume:65,useCount:7855,subsCharge:3000},
+                    {id:'2',name:'获客专家',status:1,type:1,real_name:'张伟',seatCount:34,callTime:'666',create_time:'2017-06-23',totalConsume:855,useCount:3855,subsCharge:3000},
+                    {id:'3',name:'智慧征信',status:1,type:1,real_name:'赵云',seatCount:534,callTime:'87',create_time:'2017-08-14',totalConsume:6855,useCount:3855,subsCharge:3000}
+                ]
+            }
+        });
+    };
+    //智呼类产品详情列表
+    // obj["/callProduct/getAgentStatByProduct.action"] = function(data, success, error) {
+    //     success({
+    //         errorcode:0,
+    //         errormsg:'',
+    //         data: {
+    //             list:[
+    //                 {userId:'1',name:'费用总计',status:0,type:0,realName:'王宇',agentCount:334,callTimeSum:'123',subsDate:'2017-07-18',totalFee:65,totalConsume:65,useCount:7855,subsCharge:3000},
+    //                 {userId:'2',name:'获客专家',status:1,type:1,realName:'张伟',agentCount:34,callTimeSum:'666',subsDate:'2017-06-23',totalFee:165,totalConsume:855,useCount:3855,subsCharge:3000},
+    //                 {userId:'3',name:'智慧征信',status:1,type:1,realName:'赵云',agentCount:534,callTimeSum:'87',subsDate:'2017-08-14',totalFee:265,totalConsume:6855,useCount:3855,subsCharge:3000}
+    //             ]
+    //         }
+    //     });
+    // };
+    //用户坐席信息列表
+    obj["/agent/getUserAgentList.action"] = function(data, success, error) {
+        success({
+            errorcode:0,
+            errormsg:'',
+            data: {
+                list:[
+                    {id:'1',name:'费用总计',code:'ddd',group_id:1,status:0,type:0,realName:'王宇',agentCount:334,callTimeSum:'123',update_time:'2017-07-18',totalFee:65,totalConsume:65,useCount:7855,subsCharge:3000},
+                    {id:'2',name:'获客专家',code:'ccc',group_id:2,status:1,type:1,realName:'张伟',agentCount:34,callTimeSum:'666',update_time:'2017-06-23',totalFee:165,totalConsume:855,useCount:3855,subsCharge:3000},
+                    {id:'3',name:'智慧征信',code:'eee',group_id:3,status:1,type:1,realName:'赵云',agentCount:534,callTimeSum:'87',update_time:'2017-08-14',totalFee:265,totalConsume:6855,useCount:3855,subsCharge:3000}
                 ]
             }
         });

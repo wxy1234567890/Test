@@ -7,6 +7,7 @@ var subject = require("model/global/subject");
 var TerseUI = require('terseui');
 var modalHelp = TerseUI.Frame.modalHelp;
 var Dialog = TerseUI.Frame.Dialog;
+var Scroll = TerseUI.Scroll;
 var editDialog = require("./edit.jsx");
 var addDialog = require("./add.jsx");
 var addDialog2 = require("./add2.jsx");
@@ -149,6 +150,12 @@ var MenuList = React.createClass({
 			targete.getElementsByClassName('imfordtl2')[0].setAttribute('class','imfordtl txtright');
 		}
 	}
+		// var imgChild = e.target.parentNode.childNodes[0];
+		// if(imgChild.getAttribute('class')=='wimg1'){
+		// 	imgChild.setAttribute('class','wimg2');
+		// }else{
+		// 	imgChild.setAttribute('class','wimg1');
+		// }
 		
 	},
 	onMouseDown:function (e) {
@@ -171,8 +178,8 @@ var MenuList = React.createClass({
 					return (
 						<li key={index} className="clearfix">
 							<div className="userimfor fl wuserinfoxx">
-							<img className="wimg" src={require( "../../../images/open.png")} />
-							<img className="wimg" src={require( "../../../images/file.png")} />
+								<img className="wimg" src={require( "../../../images/open.png")} />
+								<img className="wimg" src={require( "../../../images/file.png")} />
 								<div className="imfordtl"  itemID={item.get('id')}  onClick={this.toShowUserBusiness}>
 									<span className="wspan" itemID={item.get('id')} id={item.get('code')} onMouseDown={this.onMouseDown}>{item.get('name')}</span>
 								</div>
@@ -295,14 +302,16 @@ var UserCharge = React.createClass({
 				     <li className="rightli" onMouseOver={this.changeColor} onMouseOut={this.changeColor2} onClick={this.deleteCol}>删除目录</li>
 				 </ul>
 				<div className="userlist">
-					<div className="search-area ml-20 mr-20 mb-10 clearfix">
-						<div className="search-box pos-relative fl wsearchbox">
-							<input placeholder="请输入查询内容" className="s-text" type="text" value={this.state.userName} onChange={this.userNameChange}/>
-							<span className="s-btn" onClick={this.getMenuList}></span>
-							<em className="del cursor pos-absolute"></em>
+					<Scroll className="leftcon">
+						<div className="search-area ml-20 mr-20 mb-10 clearfix">
+							<div className="search-box pos-relative fl wsearchbox">
+								<input placeholder="请输入查询内容" className="s-text" type="text" value={this.state.userName} onChange={this.userNameChange}/>
+								<span className="s-btn" onClick={this.getMenuList}></span>
+								<em className="del cursor pos-absolute"></em>
+							</div>
 						</div>
-					</div>
-					<MenuList option={this.state.menuList} getProductList={this.getProductList} />
+						<MenuList option={this.state.menuList} getProductList={this.getProductList} />
+					</Scroll>
 				</div>
 			<Product option={this.state.productCode} productList={this.state.productList}/>
       		</div>

@@ -9,14 +9,12 @@ var List = Backbone.Collection.extend({
         option.loadingText = "正在加载数据,请稍候!";
         option.url = "/product/getProductList.action";
         option.data = {
-           type:"0",
-           pagesize:"10",
-           pagenow:"1"
+           type:"0"
         };
         option.success = function(data) {
-            console.log(data);
+            // console.log(data,123);
             this.set(data.list);
-            this.trigger("fetchDone");
+            this.trigger("fetchDone",data);
         }.bind(this);
         AJAX_POST(option);
     }

@@ -81,7 +81,9 @@ var MessageManage = React.createClass({
         newsList: this.state.newsList,
         pageInfo:{total:total, pageSize:this.pageSize, pageIndex:this.pageIndex}
       });
-      this.queryNewsDetail(this.state.newsList.toArray()[0].get('id'));
+      if(this.state.newsList&&this.state.newsList.length!=0){
+        this.queryNewsDetail(this.state.newsList.toArray()[0].get('id'));
+      }
     }.bind(this));
     this.getNewsList();
   },

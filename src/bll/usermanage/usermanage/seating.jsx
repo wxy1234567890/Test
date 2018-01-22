@@ -16,31 +16,32 @@ var Item = React.createClass({
     },
     render: function () {
         var model = this.props.option.item;
+        if(model.status==0){status='冻结'}else if(model.status==1){status='生效'}
         return (
             <tr>
                 <td width="25%">
-		        	<span className="ellipsis" title='111'>
+		        	<span className="ellipsis" title={model.code}>
 			        	<em className=''></em>
 			        	<b className="f14 deepgray">
-				         	111
+				         	{model.code}
 				        </b>
 			        </span>
                 </td>
-                <td width="30%">
-		        	<span className="ellipsis" title='222'>
-			         	222
+                <td width="25%">
+		        	<span className="ellipsis" title={model.group_id}>
+			         	{model.group_id}
 			        </span>
                 </td>
                 <td width="20%">
-                    <div className="select-div ellipsis" title='333'>
+                    <div className="select-div ellipsis" title={status}>
 						<span>
-							333
+							{status}
 						</span>
                     </div>
                 </td>
-                <td width="25%">
-		        	<span className="ellipsis" title='444'>
-			         	444
+                <td width="30%">
+		        	<span className="ellipsis" title={model.update_time}>
+			         	{model.update_time}
 			        </span>
                 </td>
             </tr>
@@ -56,6 +57,7 @@ var Seating = React.createClass({
 			// username:this.props.option.username,
 			pagenow: 1,
             pagesize: 10,
+            // total:4,
             filter: "",
             flag: false,
             agentList:[],
@@ -80,12 +82,12 @@ var Seating = React.createClass({
         token.clear();
         this.state.seatingModel.off("fetchDone");        
     },
-    queryAgentList:function(){
+    queryAgentList:function(page){
     	this.state.flag = false;
         this.state.seatingModel.fetch({
             loadingFlag: true,
             param: {
-                id:this.state.userid,
+                id:this.state.userid||10,
                 // id:10,
                 pagesize:this.state.pagesize,
                 pagenow:this.state.pagenow,
@@ -95,10 +97,12 @@ var Seating = React.createClass({
     },
     afterQueryAgentList:function(data){
     	// this.props.option.ok.callback();
-        // console.log(data);
+        console.log(data);
     	this.state.agentList = data.list;
+        this.state.total = data.totalCount;
     	this.setState({
-    		agentList:data.list
+    		agentList:this.state.agentList,
+            total:this.state.total
     	});
     	console.log(this.state.agentList);
     },
@@ -106,12 +110,13 @@ var Seating = React.createClass({
 		this.props.close();
 	},
 	eventListener: function (type, param) {
+        console.log(param,123);
         if (type == "page") {
-            this.state.pagesize = param;
+            this.state.pagenow = param;
             this.setState({
-                pagesize: this.state.pagesize
+                pagenow: this.state.pagenow
             });
-            token.trigger('page');
+            token.trigger('page',param);
         }
         if (type == "selectClick") {
 			token.trigger('selectClick', param);
@@ -154,7 +159,7 @@ var Seating = React.createClass({
         }, {
             key: 'streetName',
             name: '所属逻辑分组',
-            width: '30%'
+            width: '25%'
         }, {
             key: 'status',
             name: '状态',
@@ -166,14 +171,14 @@ var Seating = React.createClass({
                 value: 1
             },{
                 key: "stopped",
-                name: "失效",
+                name: "冻结",
                 value: 0
             }],
             value: 1
         }, {
             key: 'updateTime',
             name: '更新时间',
-            width: '25%'
+            width: '30%'
         },];
         var pageInfo = {
             pageIndex: this.state.pagenow,

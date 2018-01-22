@@ -8,6 +8,7 @@ var Dialog = TerseUI.Frame.Dialog;
 var Add = React.createClass({
 	getInitialState:function(){
 		var appInfo = window.appInfo.attributes;
+		console.log(appInfo);
 		return{
 			showMenu:false,
 			showMenu2:false,
@@ -44,13 +45,15 @@ var Add = React.createClass({
 		});
 	},
 	componentDidMount: function() {
-		this.state.interfaceCodeValid.on("fetchDone",function(){
+		this.state.interfaceCodeValid.on("fetchDone",function(data){
+			console.log(data,6666);
+			this.state.userList=data;
 			this.setState({
-				interfaceCodeValid:this.state.interfaceCodeValid
+				userList:data
 			});
-			this.interfaceAdd();
-		}.bind(this));
-		this.state.interfaceCodeValid.on("fault",function(){
+			if(this.state.userList==1){
+				this.interfaceAdd();
+			}else if(this.state.userList==0){
 				modalHelp.show({
 					Dialog: Dialog,
 					option: {
@@ -70,8 +73,76 @@ var Add = React.createClass({
 						}
 					}
 				});
+			}
+		}.bind(this));
+		this.state.interfaceAdd.on("fetchDone",function(data){
+			// this.state.interfaceAddList=data;
+			// this.setState({
+			// 	interfaceAddList:data
+			// });
+			modalHelp.show({
+				Dialog: Dialog,
+				option: {
+					type: "success",
+					title: "提示",
+					content: "新建接口成功",
+					ok: {text: "好的"}
+				}
+			});
 		}.bind(this));
 	},
+	// componentDidMount: function() {
+	// 	this.state.interfaceCodeValid.on("fetchDone",function(data){
+	// 		this.state.userList=data;
+	// 		if(this.state.userList==1){
+	// 			this.interfaceAdd();
+	// 		}else if(this.state.userList==0){
+	// 			modalHelp.show({
+	// 				Dialog: Dialog,
+	// 				option: {
+	// 					type: "error",
+	// 					title: "提示",
+	// 					content: "编码不唯一",
+	// 					ok: {
+	// 						text: "关闭",
+	// 						callback: function() {
+	// 							location.reload();
+	// 						}
+	// 					},
+	// 					close: {
+	// 						callback: function() {
+	// 							location.reload();
+	// 						}
+	// 					}
+	// 				}
+	// 			});
+	// 		}
+	// 		this.setState({
+	// 			userList:data
+	// 		},console.log(this.state.userList,12233));
+	// 	}.bind(this));
+	// 	// this.state.interfaceCodeValid.on("fault",function(data){
+	// 	// 		modalHelp.show({
+	// 	// 			Dialog: Dialog,
+	// 	// 			option: {
+	// 	// 				type: "error",
+	// 	// 				title: "提示",
+	// 	// 				content: "编码不唯一",
+	// 	// 				ok: {
+	// 	// 					text: "关闭",
+	// 	// 					callback: function() {
+	// 	// 						location.reload();
+	// 	// 					}
+	// 	// 				},
+	// 	// 				close: {
+	// 	// 					callback: function() {
+	// 	// 						location.reload();
+	// 	// 					}
+	// 	// 				}
+	// 	// 			}
+	// 	// 		});
+	// 	// }.bind(this));
+	// },
 	interfaceAdd:function(){
 		var singlearr = [];
 		var singleobj = {};
@@ -106,6 +177,7 @@ var Add = React.createClass({
         	singlearr.push(JSON.parse(JSON.stringify(singleobj)));
         }
         })
+        console.log(singlearr,123456);
 		this.setState({
 			argsConfig: singlearr
 		})
@@ -156,11 +228,11 @@ var Add = React.createClass({
 		})
 	},
 	deleteLine:function(e){
-		e.target.parentNode.remove();
+		e.target.parentNode.parentNode.remove();
 	},
 	addLine:function(e){
-		var content = 	"<li class='clearfix line'><div class='substance fl awayleft'><input placeholder='参数名称' type='text' /></div><div class='substance fl awayleft'><input placeholder='参数说明' type='text' /></div><input class='wcheck' type='checkbox' value='0' onClick='this.value==0?this.value=1:this.value=0'/>可为空<span class='wtext' onClick='this.parentNode.remove()'>删除</span></li>";
-		$(e.target.parentNode).after(content);
+		var content = 	"<li class='clearfix line lineH'><div class='substance fl awayleft'><input placeholder='对外参数' type='text' /></div><div class='substance fl awayleft'><input placeholder='参数说明' type='text' /></div><input class='wcheck' type='checkbox' value='0' onClick='this.value==0?this.value=1:this.value=0'/>可为空<span class='wtext' onClick='this.parentNode.remove()'>删除</span></li>";
+		$(e.target.parentNode.parentNode).after(content);
 	},
 	checkboxval:function(e){
 		if(e.target.checked){
@@ -233,9 +305,9 @@ var Add = React.createClass({
 					
 						</li>
 						<li className="clearfix">
-							<div className="name w85 fl">内部调用KEY<span className="tip">*</span></div>
+							<div className="name w85 fl">外部调用KEY<span className="tip">*</span></div>
 							<div className="substance fl awayleft wwidth80">
-								<input placeholder="内部调用KEY" type="text" value={this.state.key} id="key" onChange={this.valueChange}/>
+								<input placeholder="外部调用KEY" type="text" value={this.state.key} id="key" onChange={this.valueChange}/>
 							</div>
 					
 						</li>
@@ -253,8 +325,8 @@ var Add = React.createClass({
 							</div>
 						</li>	
 						<li className="clearfix">
-							<input className="wcheck" type="checkbox"   id="pre_auth" onClick={this.pre_authchange}/>是否需要验证
-							<div className="name w85 fl">pre_auth<span className="tip">*</span></div>
+							<input className="wcheck" type="checkbox"   id="pre_auth" onClick={this.pre_authchange}/><span style={{"lineHeight":"32px"}}>需要验证</span>
+							<div className="name w85 fl">预验证<span className="tip">*</span></div>
 						</li>		
 					</ul>
 				</div>
@@ -266,25 +338,25 @@ var Add = React.createClass({
 
 				<div className="dialog-bd">
 					<ul className="ulform clearfix addline">
-						<li className="clearfix line">
-							<div className="substance fl awayleft">
-								<input placeholder="对内参数" type="text" />
-							</div>
+						<li className="clearfix line lineH">
 							<div className="substance fl awayleft">
 								<input placeholder="对外参数" type="text" />
 							</div>
-							<input className="wcheck" type="checkbox"   onClick={this.checkboxval}/>可为空
-							<span className="wtext" onClick={this.addLine}>添加</span>
-						</li>		
-						<li className="clearfix line">
 							<div className="substance fl awayleft">
-								<input placeholder="对内参数" type="text"/>
+								<input placeholder="参数说明" type="text" />
 							</div>
+							<input className="wcheck" type="checkbox"   onClick={this.checkboxval}/><span style={{"lineHeight":"32px"}}>可为空
+							<span className="wtext" onClick={this.addLine}>添加</span></span>
+						</li>		
+						<li className="clearfix line lineH">
 							<div className="substance fl awayleft">
 								<input placeholder="对外参数" type="text"/>
 							</div>
-							<input className="wcheck" type="checkbox"   onClick={this.checkboxval}/>可为空
-							<span className="wtext" onClick={this.deleteLine}>删除</span>
+							<div className="substance fl awayleft">
+								<input placeholder="参数说明" type="text"/>
+							</div>
+							<input className="wcheck" type="checkbox"   onClick={this.checkboxval}/><span style={{"lineHeight":"32px"}}>可为空
+							<span className="wtext" onClick={this.deleteLine}>删除</span></span>
 						</li>			
 					</ul>
 				</div>

@@ -11,6 +11,8 @@ var Model = Backbone.Model.extend({
             type:option.param.type,
             charge_type:option.param.chargeType,
             real_name:option.param.realName,
+            email:option.param.userEmail,
+            phone:option.param.userPhone,
             description:option.param.userDesc,
             company_id:option.param.company_id,
             company:{

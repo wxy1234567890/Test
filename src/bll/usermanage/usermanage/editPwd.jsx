@@ -40,8 +40,9 @@ var Add = React.createClass({
 			loadingFlag: true,
 			param:{
 				userId:this.state.userid,
-				oldPwd:hex_md5(this.state.oldPwd.trim() + this.state.username.trim()),
-				newPwd:hex_md5(this.state.newPwd.trim() + this.state.username.trim())
+				oldPwd:hex_md5(this.state.username.trim() + this.state.oldPwd.trim()),
+				newPwd:hex_md5(this.state.username.trim() + this.state.newPwd.trim())
+
 			}
 		});
 	},

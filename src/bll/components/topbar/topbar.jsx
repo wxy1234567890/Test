@@ -6,6 +6,7 @@ var modalHelp = TerseUI.Frame.modalHelp;
 var Dialog = TerseUI.Frame.Dialog;
 var editDialog = require("./edit.jsx");
 var AJAX_POST = require("util/ajax").AJAX_POST;
+var editPwdDialog = require("./editPwd.jsx");
 /*
  * @description 菜单项
  * @props menu 菜单项要使用的数据,包括key和name两个属性
@@ -37,8 +38,11 @@ var MenuItem = React.createClass({
  */
 var Topbar = React.createClass({
   getInitialState:function(){
+    console.log(sessionStorage);
     return {
       showLoginArea:false,
+      id:sessionStorage.getItem('id'),
+      login_name:sessionStorage.getItem('login_name'),
       name:sessionStorage.getItem('name'),
       email:sessionStorage.getItem('email'),
       phone:sessionStorage.getItem('phone')
@@ -92,6 +96,29 @@ var Topbar = React.createClass({
         path:'login'
       });
   },
+  resetPwd:function () {
+    modalHelp.show({
+      Dialog: editPwdDialog,
+      option: {
+        userId:this.state.id,
+        loginname:this.state.login_name,
+        ok:{
+          callback:function(){
+            //修改密码后
+            modalHelp.show({
+              Dialog: Dialog,
+              option: {
+                type: "warn",
+                title: "提示",
+                content: "修改密码成功",
+                ok: {text: "好的"}
+              }
+            });
+          }.bind(this)
+        }
+      }
+    });
+  },
 	render: function() {
     var loginAreaCls = classNames("login-area", "fl", "pos-rel",{
       "active":this.state.showLoginArea
@@ -101,7 +128,7 @@ var Topbar = React.createClass({
     })
     var userName = sessionStorage.getItem('bsCurrentUser') || '测试用户';
     var menus = window.JSON.parse(sessionStorage.getItem('bsMenus'));
-
+    // console.log(sessionStorage);
 		return (
       <div className="topbar rent clearfix">
         <div className={barContentCls}>
@@ -129,7 +156,7 @@ var Topbar = React.createClass({
                   </p>
                 </div>
                 <div className="ope">
-                  <span>修改密码</span>
+                  <span onClick={this.resetPwd}>修改密码</span>
                   <span onClick={this.editDialog}>编辑资料</span>
                   <span onClick={this.withdraw}>注销</span>
                 </div>

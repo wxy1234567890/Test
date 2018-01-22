@@ -29,7 +29,9 @@ var Edit = React.createClass({
 			comEmail:param.comEmail,
 			comAddress:param.comAddress,
 			comLegalPerson:param.comLegalPerson,
-			comLicense:param.comLicense
+			comLicense:param.comLicense,
+			act2:param.type==1?true:false,
+			act:param.chargeType==2?true:false
 		};
 	},
 	componentDidMount: function() {
@@ -58,6 +60,18 @@ var Edit = React.createClass({
 		}.bind(this));
 	},
 	userInfoUpdate: function() {
+		if(this.state.act){
+			var charge_type = 2;
+		}
+		else{
+			var charge_type = 1;
+		}
+		if(this.state.act2){
+			var usertype = 1;
+		}
+		else{
+			var usertype = 0;
+		}
 		if(this.state.userEmail!="" && !isEmail(this.state.userEmail)){
 			showMessage("邮箱格式不正确");
 			return;
@@ -71,8 +85,8 @@ var Edit = React.createClass({
 				passWord:this.state.passWord,
 				balance:this.state.balance,
 				frozen:this.state.frozen,
-				type:this.state.type,
-				chargeType:this.state.chargeType,
+				type:usertype,
+				chargeType:charge_type,
 				realName:this.state.realName,
 				userEmail:this.state.userEmail,
 				userPhone:this.state.userPhone,
@@ -166,6 +180,16 @@ var Edit = React.createClass({
 	okHandler: function() {
 		this.userInfoUpdate();
 	},
+	chargeType:function (e) {
+		this.setState({
+			act: !this.state.act
+		});
+	},
+	chargeType2:function (e) {
+		this.setState({
+			act2: !this.state.act2
+		});
+	},
 	render: function() {
 		return (
 			<div className="dialog-confirm releasenewmsg weditdia">
@@ -206,18 +230,18 @@ var Edit = React.createClass({
 								<input type="text" value={this.state.userEmail} onChange={this.emailChange}/>
 							</div>
 						</li>
-						<li className="clearfix">
-							<div className="name fl">用户类型</div>
-							<div className="substance fl">
-								<input type="text" value={this.state.type?"普通用户":"开发者"} onClick={this.typeChange} />
-							</div>
-						</li>
-						<li className="clearfix">
-							<div className="name fl">计费类型</div>
-							<div className="substance fl">
-								<input type="text"  value={this.state.chargeType?"预付费用户":"后付费用户"} onClick={this.chargeTypeChange}/>
-							</div>
-						</li>
+					</ul>
+					<ul className="radiobtn wradiobtnw1">
+						<li className={this.state.act2 ? "" : "active"} itemID="0" onClick={this.chargeType2}>普通用户</li>
+						<li className={this.state.act2 ? "active" : ""} itemID="1" onClick={this.chargeType2}>开发者</li>
+					</ul>
+					<br/>
+					<br/>
+					<ul className="radiobtn wradiobtnw1">						
+						<li className={this.state.act ? "" : "active"} itemID="1" onClick={this.chargeType}>预付费</li>
+						<li className={this.state.act ? "active" : ""} itemID="2" onClick={this.chargeType}>后付费</li>
+					</ul>
+					<ul className="ulform mt-10 clearfix">
 						<li className="clearfix">
 							<div className="name fl">账户资金</div>
 							<div className="substance fl">
@@ -237,6 +261,7 @@ var Edit = React.createClass({
 							</div>
 						</li>
 					</ul>
+					<div className={this.state.comName?"":"hide"}>
 					<p className="f14 mt-30 mb-15"><b>企业资料</b></p>
 					<ul className="ulform mt-10 clearfix">
 						<li className="clearfix">
@@ -282,6 +307,7 @@ var Edit = React.createClass({
 							</div>
 						</li>
 					</ul>
+					</div>
 				</div>
 				<div className="dialog-ft">
 					<span className="btn btn-create mr-10" onClick={this.okHandler}>提交</span>

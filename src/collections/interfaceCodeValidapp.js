@@ -1,23 +1,42 @@
+// var Backbone = require("backbone");
+// var AJAX_POST = require("util/ajax").AJAX_POST;
+
+// var Model = Backbone.Model.extend({});
+
+// var List = Backbone.Collection.extend({
+//     model: Model,
+//     fetch:function(option){
+//         option.loadingText = "正在加载数据,请稍候!";
+//         option.url = "/application/checkUniqueCode.action";
+//         option.data = {
+//               code:option.param.code
+//         };
+//         option.success = function(data) {
+//             console.log(data,9999);
+//             this.set(data);
+//             this.trigger("fetchDone");
+//         }.bind(this);
+//         AJAX_POST(option);
+//     }
+// });
+
+// module.exports = List;
 var Backbone = require("backbone");
 var AJAX_POST = require("util/ajax").AJAX_POST;
+var model=Backbone.Model.extend({
+    initialize:function () {
 
-var Model = Backbone.Model.extend({});
-
-var List = Backbone.Collection.extend({
-    model: Model,
-    fetch:function(option){
-        option.loadingText = "正在加载数据,请稍候!";
+    },
+    fetch:function (option) {
+        option.loadingText="正在加载数据,请稍候!";
         option.url = "/application/checkUniqueCode.action";
-        option.data = {
-              code:option.param.code
-        };
-        option.success = function(data) {
-            console.log(data);
+        option.data = option.param;
+        option.success = function (data) {
             this.set(data);
-            this.trigger("fetchDone");
+            this.trigger("fetchDone", data);
+            // console.log(data,999);
         }.bind(this);
         AJAX_POST(option);
     }
 });
-
-module.exports = List;
+module.exports=model;

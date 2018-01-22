@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>kindeditor demo</title>
+</head>
+
+<body>
+    <textarea id="editor_id" name="content" style="width:700px;height:300px;">
+        </textarea>
+</body>
+<script src="./kindeditor/kindeditor.min.js"></script>
+<script>
+    // 初始化表格
+    // 关闭过滤模式，保留所有标签
+    KindEditor.options.filterMode = false;
+    // 第一个参数选择器，第二个配置对象
+    KindEditor.ready(function (K) {
+        window.editor = K.create('#editor_id');
+    });
+    // 取得HTML内容
+
+    document.documentElement.onclick=()=>{
+    // 同步数据后可以直接取得textarea的value
+    editor.sync();
+    html = document.getElementById('editor_id').value; // 原生API
+    // html = K('#editor_id').val(); // KindEditor Node API
+    // html = $('#editor_id').val(); // jQuery
+    console.log(html)
+
+    //提交数据
+    // 直接提交html
+    // 或者放到form标签中（直接提交）
+    }
+
+</script>
+
+</html>

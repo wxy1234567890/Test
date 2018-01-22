@@ -8,13 +8,9 @@ var List = Backbone.Collection.extend({
     fetch:function(option){
         option.loadingText = "正在加载数据,请稍候!";
         option.url = "/product/getInterfaceUseListByMonth.action";
-        option.data = {
-          id:option.param.productId,
-          userId:window.userId,
-          month:option.param.month
-        };
+        option.data = option.param;
         option.success = function(data) {
-            console.log(data);
+            // console.log(data);
             this.set(data.list);
             this.trigger("fetchDone");
         }.bind(this);

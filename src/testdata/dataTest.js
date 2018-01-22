@@ -281,4 +281,111 @@ module.exports = function(obj) {
             }
         });
     };
+    //智呼类服务测试选择接口
+    obj["/serviceTest/getServiceList.action"] = function(data, success, error) {
+        success({
+            errorcode:0,
+            errormsg:'',
+            data: [
+            {
+            interfaceCode:"interfaceAA",
+            interfaceName:"AA",
+            args:[
+                {
+                    name:"坐席选择",
+                    code:"agent1",
+                    type:"3",  //0-text 1-date 2-datetime 3-dropdownList 
+                    options:[
+                        {
+                            "key":"测试坐席A",
+                            "value":"TestAgentA"
+                        },
+                        {
+                            "key":"测试坐席B",
+                            "value":"TestAgentB"
+                        }
+                    ],
+                    remark:"111111"
+                },
+                {
+                    name:"坐席选择",
+                    code:"agent2",
+                    type:"3",  //0-text 1-date 2-datetime 3-dropdownList 
+                    options:[
+                        {
+                            "key":"测试坐席C",
+                            "value":"TestAgentC"
+                        },
+                        {
+                            "key":"测试坐席D",
+                            "value":"TestAgentD"
+                        }
+                    ],
+                    remark:"333333"
+                },
+                {
+                    name:"开始时间",
+                    code:"starttimeA",
+                    type:"2"
+                },
+                {
+                    name:"结束时间",
+                    code:"endtimeA",
+                    type:"1"
+                },
+                {
+                    name:"备注",
+                    code:"remarkA",
+                    type:"0"
+                }
+            ],
+            remark:'123456'
+        },
+        {
+            interfaceCode:"interfaceBB",
+            interfaceName:"BB",
+            args:[
+                {
+                    name:"坐席选择",
+                    code:"agent",
+                    type:"3",  //0-text 1-date 2-datetime 3-dropdownList 
+                    options:[
+                        {
+                            "key":"测试坐席A",
+                            "value":"TestAgentA"
+                        },
+                        {
+                            "key":"测试坐席B",
+                            "value":"TestAgentB"
+                        }
+                    ],
+                    remark:"222222"
+                },
+                {
+                    name:"开始时间",
+                    code:"starttimeB",
+                    type:"2"
+                },
+                {
+                    name:"备注",
+                    code:"remarkB",
+                    type:"0"
+                }
+            ],
+            remark:'789856'
+        },
+        ]
+        });
+    };
+    //智呼类接口请求参数，返回结果
+    obj["/serviceTest/callService.action"] = function(data, success, error) {
+        success({
+            errorcode:0,
+            errormsg:'',
+            data: {
+                requestParam:"AAAAAAA", //请求参数
+                returnResult:"BBBBBBBBBBBB" //返回结果
+        }
+        });
+    };
 };

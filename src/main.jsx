@@ -38,7 +38,7 @@ function preRoute(route){
 	if (route === 'createbs') {
 		return true;
 	}
-	if (route === 'createbs2') {
+	if (route === 'editbs') {
 		return true;
 	}
 	if(route=='award'){
@@ -72,11 +72,15 @@ var moduleMap = {
 	"bsmanage":require("bll/bsmanage/frame.jsx"),//业务管理
 	"logmanage":require("bll/logmanage/frame.jsx"),//日志管理
 	"messagemanage":require("bll/messagemanage/frame.jsx"),//消息管理
-	"interfacemanage":require("bll/usermanage/interfacemanage/frame.jsx"),//接口管理
+	"interfacemanage":require("bll/usermanage/interfacemanage/frame.jsx"),//应用接口配置
 	"colmanage":require("bll/usermanage/colmanage/frame.jsx"),//目录管理
+	"serviceTest":require("bll/usermanage/serviceTest/frame.jsx"),//服务测试
+	"apiMenuConfig":require("bll/usermanage/apiMenuConfig/frame.jsx"),//API目录配置
+	"apiUse":require("bll/usermanage/apiUse/frame.jsx"),//API使用说明
+	"apiTotalMenu":require("bll/usermanage/apiTotalMenu/frame.jsx"),//API总目录
 	"createuser": require("bll/usermanage/usermanage/createuser.jsx"),//新建用户
 	"createbs": require("bll/bsmanage/createbs.jsx"),//新建业务
-	"createbs2": require("bll/bsmanage/createbs2.jsx")//编辑业务
+	"editbs": require("bll/bsmanage/editbs.jsx")//编辑业务
 };
 
 

@@ -68,6 +68,7 @@ var Add = React.createClass({
         	singlearr.push(JSON.parse(JSON.stringify(singleobj)));
         }
         })
+         console.log(singlearr);
 		this.state.interfaceAdd.on("fetchDone",function(){
 			this.props.close();
 			location.reload();
@@ -117,10 +118,12 @@ var Add = React.createClass({
 	},
 	deleteLine:function(e){
 		e.target.parentNode.remove();
+		this.refresh;
 	},
 	addLine:function(e){
-		var content = 	"<li class='clearfix line'><div class='substance fl awayleft'><input placeholder='参数名称' type='text' /></div><div class='substance fl awayleft'><input placeholder='参数名称' type='text' /></div><input class='wcheck' type='checkbox' value='0' onClick='this.value==0?this.value=1:this.value=0'/>可为空<span class='wtext' onClick='this.parentNode.remove()'>删除</span></li>";
+		var content = 	"<li class='clearfix line lineH'><div class='substance fl awayleft'><input placeholder='对内参数' type='text' /></div><div class='substance fl awayleft'><input placeholder='参数说明' type='text' /></div><input class='wcheck' type='checkbox' value='0' onClick='this.value==0?this.value=1:this.value=0'/>可为空<span class='wtext' onClick='this.parentNode.remove()'>删除</span></li>";
 		$(e.target.parentNode).before(content);
+		this.refresh;
 	},
 	checkboxval:function(e){
 		if(e.target.checked){
@@ -161,6 +164,13 @@ var Add = React.createClass({
 			}
 			this.setState({pre_auth:e.target.value})
 	},
+	refresh: function() {
+		if (!this.unmount) {
+			this.setState({
+				a: 1
+			});
+		}
+	},
 	render: function() {
 		return (
 			<div className="dialog-confirm addif addyw">
@@ -194,7 +204,7 @@ var Add = React.createClass({
 					
 						</li>
 						<li className="clearfix">
-							<div className="name w85 fl">内部调用KEY<span className="tip">*</span></div>
+							<div className="name w85 fl">外部调用KEY<span className="tip">*</span></div>
 							<div className="substance fl awayleft wwidth80">
 								<input placeholder="对内服务参数名称" type="text" value={this.state.key} id="key" onChange={this.valueChange}/>
 							</div>
@@ -229,7 +239,7 @@ var Add = React.createClass({
 					<ul className="ulform clearfix addline">
 						{this.state.getArgsList.map(function(item,index){
 							return (
-						<li className="clearfix line" key={index}>
+						<li className="clearfix line lineH" key={index}>
 							<div className="substance fl awayleft">
 								<input defaultValue={item.get('name')} type="text"/>
 							</div>
@@ -241,12 +251,12 @@ var Add = React.createClass({
 						</li>
 							)
 						}.bind(this))}	
-						<li className="clearfix line">
+						<li className="clearfix line lineH">
 							<div className="substance fl awayleft">
 								<input placeholder="对内参数" type="text" />
 							</div>
 							<div className="substance fl awayleft">
-								<input placeholder="对外参数" type="text" />
+								<input placeholder="参数说明" type="text" />
 							</div>
 							<input className="wcheck" type="checkbox"   onClick={this.checkboxval}/>可为空
 							<span className="wtext" onClick={this.addLine}>添加</span>

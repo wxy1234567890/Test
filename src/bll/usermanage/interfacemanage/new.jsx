@@ -1,7 +1,9 @@
 var React = require("react");
+var TerseUI = require('terseui');
 var interfaceAdd = require('collection/appAdd');
 var interfaceCodeValid = require('collection/interfaceCodeValidapp');
-
+var modalHelp = TerseUI.Frame.modalHelp;
+var Dialog = TerseUI.Frame.Dialog;
 var Add = React.createClass({
 	getInitialState:function(){
 		return{
@@ -17,7 +19,8 @@ var Add = React.createClass({
 			key:"",
 			pre_auth:"0",
 			description:"",
-			argsConfig:[]
+			argsConfig:[],
+			// interfaceAddList:""
 		};
 	},
 	componentDidMount: function() {
@@ -34,19 +37,56 @@ var Add = React.createClass({
 		this.state.interfaceCodeValid.fetch({
 			loadingFlag:true,
 			param:{
-				code:this.state.code
+				code:this.state.app_id
 			}
 		});
 	},
 	componentDidMount: function() {
-		this.state.interfaceCodeValid.on("fetchDone",function(){
+		this.state.interfaceCodeValid.on("fetchDone",function(data){
+			this.state.userList=data;
 			this.setState({
-				userList:this.state.userList
+				userList:data
 			});
-			this.interfaceAdd();
+			if(this.state.userList==1){
+				this.interfaceAdd();
+			}else if(this.state.userList==0){
+				modalHelp.show({
+					Dialog: Dialog,
+					option: {
+						type: "error",
+						title: "提示",
+						content: "编码不唯一",
+						ok: {
+							text: "关闭",
+							callback: function() {
+								location.reload();
+							}
+						},
+						close: {
+							callback: function() {
+								location.reload();
+							}
+						}
+					}
+				});
+			}
 		}.bind(this));
-		this.state.interfaceAdd.on("fetchDone",function(){
-		})},
+		this.state.interfaceAdd.on("fetchDone",function(data){
+			// this.state.interfaceAddList=data;
+			// this.setState({
+			// 	interfaceAddList:data
+			// });
+			modalHelp.show({
+				Dialog: Dialog,
+				option: {
+					type: "success",
+					title: "提示",
+					content: "新建应用成功",
+					ok: {text: "好的"}
+				}
+			});
+		}.bind(this));
+	},
 	interfaceAdd:function(){
 		var singlearr = [];
 		var singleobj = {};

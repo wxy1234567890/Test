@@ -8,9 +8,7 @@ var List = Backbone.Collection.extend({
     fetch:function(option){
         option.loadingText = "正在加载数据,请稍候!";
         option.url = "/application/getAppList.action";
-        option.data = {
-
-        };
+        option.data = {};
         option.success = function(data) {
             // console.log(data);
             this.set(data);
