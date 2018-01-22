@@ -20,7 +20,7 @@ var DevLop = React.createClass({
 		this.state.accessIntro.on("fetchDone",function(total){
 			this.setState({
 				accessIntro:this.state.accessIntro
-			},console.log(this.state.accessIntro.toArray()),123);
+			},console.log(this.state.accessIntro.toArray()[0].get("title")),123);
 			if(this.state.accessIntro&&this.state.accessIntro.length!=0){
 				// this.getAppInfo(this.state.accessIntro.toArray()[0].get('id'),this.state.accessIntro.toArray()[0].get('name'));
 			}
