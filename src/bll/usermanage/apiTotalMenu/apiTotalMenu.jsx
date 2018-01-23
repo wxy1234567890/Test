@@ -192,9 +192,9 @@ var DevLop = React.createClass({
 
 		this.getUserList();
 	},
-	componentWillMount:function(){
-		// this.getDetail();
-	},
+	// componentWillMount:function(){
+	// 	// this.getDetail();
+	// },
 	getUserList:function(){
 		this.state.userList.fetch({
 			loadingFlag:true,

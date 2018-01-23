@@ -33,7 +33,7 @@ var model=Backbone.Model.extend({
         option.success = function (data) {
             this.set(data);
             this.trigger("fetchDone", data);
-            console.log(data,888);
+            // console.log(data,888);
         }.bind(this);
         AJAX_POST(option);
     }
